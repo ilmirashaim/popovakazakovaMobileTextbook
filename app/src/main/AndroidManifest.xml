@@ -11,8 +11,7 @@
         <activity
             android:name=".ReadingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_reading"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/Base.Theme.AppCompat" >
         </activity>
     </application>
 
