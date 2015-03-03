@@ -1,6 +1,8 @@
 package lim.one.popovakazakova;
 
 
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,6 +36,16 @@ public class ScreenSlidePageFragment extends Fragment {
 
         final TextView title = (TextView) rootView.findViewById(R.id.sound_title);
         title.setText(getArguments().getString("title"));
+        MediaPlayer mp = new MediaPlayer();
+
+        try {
+            AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd("sounds/da-dat.mp3");
+            mp.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+            mp.prepare();
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return rootView;
     }

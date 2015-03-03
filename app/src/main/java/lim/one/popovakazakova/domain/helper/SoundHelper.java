@@ -59,4 +59,12 @@ public class SoundHelper {
 
         return sound;
     }
+
+    public boolean hasPhoneticExercises(Sound sound){
+        Cursor cursor = db.rawQuery("select count(*) from phonetic_exercise where sound_id = ?",
+                new String[]{sound.getId().toString()});
+        cursor.moveToFirst();
+        Integer count = cursor.getInt(0);
+        return count > 0;
+    }
 }
