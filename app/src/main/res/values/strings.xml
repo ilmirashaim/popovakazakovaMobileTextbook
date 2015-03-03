@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">popovaKazakova</string>
+
+    <string name="title_activity_reading">ReadingActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="next">next</string>
+</resources>
