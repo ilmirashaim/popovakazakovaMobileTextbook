@@ -1,34 +1,28 @@
 package lim.one.popovakazakova;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.widget.ExpandableListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Sound;
+import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
+import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
+import lim.one.popovakazakova.domain.helper.SectionHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
+import lim.one.popovakazakova.util.LessonExpandableListAdapter;
 
 public class ReadingActivity extends FragmentActivity {
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,94 +32,67 @@ public class ReadingActivity extends FragmentActivity {
         SQLiteDatabase db = ((EbookApplication)getApplication()).getDatabase();
 
         LessonHelper lessonHelper = new LessonHelper(db);
+        SoundHelper soundHelper = new SoundHelper(db);
+        PhoneticExerciseHelper phoneticExerciseHelper = new PhoneticExerciseHelper(db);
+        SectionHelper sectionHelper = new SectionHelper();
+        sectionHelper.registerHelper(soundHelper);
+        sectionHelper.registerHelper(phoneticExerciseHelper);
+
         List<Lesson> lessons = lessonHelper.getAll();
 
-        Lesson first = lessons.iterator().next();
+        ExpandableListView listView = (ExpandableListView)findViewById(R.id.exListView);
 
-        SoundHelper soundHelper = new SoundHelper(db);
-        List<Sound> sounds = soundHelper.getAllSounds(first);
+        List<Pair<Lesson, List<Section>>> groups = new ArrayList<>();
+        for(Lesson l:lessons){
+            List<Section> sections = sectionHelper.getAllSections(l);
 
-        Log.d("sounds", sounds.size() + "");
-
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), sounds);
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
-    }
-    @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            groups.add(new Pair<>(l, sections));
         }
-    }
-
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        List<Sound> sounds;
-        public ScreenSlidePagerAdapter(FragmentManager fm, List<Sound> sounds) {
-            super(fm);
-            this.sounds = sounds;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return ScreenSlidePageFragment.newInstance(sounds.get(position));
-        }
-
-        @Override
-        public int getCount() {
-            return sounds.size();
-        }
-    }
-
-    private class ZoomOutPageTransformer implements ViewPager.PageTransformer {
-        private static final float MIN_SCALE = 0.85f;
-        private static final float MIN_ALPHA = 0.5f;
-
-        public void transformPage(View view, float position) {
-            int pageWidth = view.getWidth();
-            int pageHeight = view.getHeight();
-
-            if (position < -1) { // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                view.setAlpha(0);
-
-            } else if (position <= 1) { // [-1,1]
-                // Modify the default slide transition to shrink the page as well
-                float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
-                float vertMargin = pageHeight * (1 - scaleFactor) / 2;
-                float horzMargin = pageWidth * (1 - scaleFactor) / 2;
-                if (position < 0) {
-                    view.setTranslationX(horzMargin - vertMargin / 2);
-                } else {
-                    view.setTranslationX(-horzMargin + vertMargin / 2);
-                }
-
-                // Scale the page down (between MIN_SCALE and 1)
-                view.setScaleX(scaleFactor);
-                view.setScaleY(scaleFactor);
-
-                // Fade the page relative to its size.
-                view.setAlpha(MIN_ALPHA +
-                        (scaleFactor - MIN_SCALE) /
-                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));
-
-            } else { // (1,+Infinity]
-                // This page is way off-screen to the right.
-                view.setAlpha(0);
+        LessonExpandableListAdapter adapter = new LessonExpandableListAdapter(getApplicationContext(), groups);
+        listView.setAdapter(adapter);
+        Log.d("starting act", "");
+        listView.setOnChildClickListener(new OnLessonSectionClickListener(groups));
+        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                Log.d("group clicked", groupPosition + "");
+                return false;
             }
+        });
+
+    }
+
+    private class OnLessonSectionClickListener implements ExpandableListView.OnChildClickListener {
+        private List<Pair<Lesson, List<Section>>> groups;
+
+        private OnLessonSectionClickListener(List<Pair<Lesson, List<Section>>> groups) {
+            this.groups = groups;
         }
+
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            Log.d("create an intent", "f");
+            Lesson lesson = groups.get(groupPosition).first;
+            Section section = groups.get(groupPosition).second.get(childPosition);
+            if(section.getName().equals("Звуки")) {
+                Log.d("create an intent", "f");
+
+                Intent intent = new Intent(getOuter(), SoundsActivity.class);
+                Bundle b = new Bundle();
+                b.putLong("lesson_id", lesson.getId());
+                intent.putExtras(b);
+                Log.d("starting activity", "f");
+                startActivity(intent);
+                finish();
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {}
+    public ReadingActivity getOuter() {
+        return ReadingActivity.this;
     }
 
 }

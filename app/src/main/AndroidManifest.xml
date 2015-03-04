@@ -13,6 +13,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.Theme.AppCompat" >
         </activity>
+        <activity
+            android:name=".SoundsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.Theme.AppCompat" >
+        </activity>
     </application>
 
 </manifest>

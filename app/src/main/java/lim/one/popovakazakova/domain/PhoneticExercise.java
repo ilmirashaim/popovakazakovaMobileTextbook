@@ -1,19 +1,10 @@
 package lim.one.popovakazakova.domain;
 
-public class PhoneticExercise {
-    private Long id;
+public class PhoneticExercise extends LessonElement{
     private String filename;
     private Long soundId;
     private String transcription;
     private String title;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTranscription() {
         return transcription;

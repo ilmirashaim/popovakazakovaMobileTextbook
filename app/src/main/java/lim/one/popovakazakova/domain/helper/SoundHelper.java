@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.Sound;
 
-public class SoundHelper {
+public class SoundHelper implements ISectionHelper{
     SQLiteDatabase db;
     private String[] allColumns = {"_id", "lesson_id", "title", "content"};
     private static final String tableName = "sound";
@@ -23,10 +24,9 @@ public class SoundHelper {
         List<Sound> sounds = new ArrayList<Sound>();
 
 
-        Cursor cursor = db.rawQuery("select s._id, el.lesson_id, s.title, s.content " +
-                        "from sound s, lesson_element el " +
-                        "where el._id=s._id and " +
-                        "el.lesson_id=?",
+        Cursor cursor = db.rawQuery("select " + getColumnsNames("") + " " +
+                        "from sound " +
+                        "where lesson_id=?",
                 new String[]{lesson.getId().toString()});
         Log.d("starting query: ", cursor.getCount() + "");
         cursor.moveToFirst();
@@ -60,11 +60,23 @@ public class SoundHelper {
         return sound;
     }
 
-    public boolean hasPhoneticExercises(Sound sound){
-        Cursor cursor = db.rawQuery("select count(*) from phonetic_exercise where sound_id = ?",
-                new String[]{sound.getId().toString()});
+
+    public boolean hasSounds(Lesson lesson){
+        Cursor cursor = db.rawQuery("select count(*) from sound where lesson_id = ?",
+                new String[]{lesson.getId().toString()});
         cursor.moveToFirst();
         Integer count = cursor.getInt(0);
+        cursor.close();
         return count > 0;
+    }
+
+    @Override
+    public List<Section> getSections(Lesson lesson) {
+        List<Section> sections = new ArrayList<>();
+
+        if(hasSounds(lesson)){
+            sections.add(new Section("Звуки"));
+        }
+        return sections;
     }
 }

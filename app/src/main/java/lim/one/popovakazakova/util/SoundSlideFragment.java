@@ -1,4 +1,4 @@
-package lim.one.popovakazakova;
+package lim.one.popovakazakova.util;
 
 
 import android.content.res.AssetFileDescriptor;
@@ -10,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Sound;
 
-public class ScreenSlidePageFragment extends Fragment {
+public class SoundSlideFragment extends Fragment {
 
-    public static ScreenSlidePageFragment newInstance(Sound sound) {
-        ScreenSlidePageFragment f = new ScreenSlidePageFragment();
+    public static SoundSlideFragment newInstance(Sound sound) {
+        SoundSlideFragment f = new SoundSlideFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -36,16 +37,16 @@ public class ScreenSlidePageFragment extends Fragment {
 
         final TextView title = (TextView) rootView.findViewById(R.id.sound_title);
         title.setText(getArguments().getString("title"));
-        MediaPlayer mp = new MediaPlayer();
-
-        try {
-            AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd("sounds/da-dat.mp3");
-            mp.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-            mp.prepare();
-            mp.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        MediaPlayer mp = new MediaPlayer();
+//
+//        try {
+//            AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd("sounds/da-dat.mp3");
+//            mp.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+//            mp.prepare();
+//            mp.start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return rootView;
     }

@@ -18,7 +18,12 @@ public class LessonHelper {
     }
 
     public Lesson getById(Long id) {
-        throw new DatabaseException("not yet realized");
+        Cursor cursor = db.query("lesson",
+                allColumns, "_id=?", new String[]{id.toString()}, null, null, null);
+        cursor.moveToFirst();
+        Lesson lesson = cursorToLesson(cursor);
+        cursor.close();
+        return lesson;
     }
 
     public List<Lesson> getAll() {
