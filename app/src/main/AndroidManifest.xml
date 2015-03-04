@@ -9,14 +9,14 @@
         android:theme="@style/AppTheme"
         android:name=".EbookApplication">
         <activity
-            android:name=".ReadingActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Base.Theme.AppCompat" >
+            android:theme="@style/Base.V21.Theme.AppCompat" >
         </activity>
         <activity
             android:name=".SoundsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Base.Theme.AppCompat" >
+            android:theme="@style/Base.V21.Theme.AppCompat" >
         </activity>
     </application>
 

@@ -1,5 +1,6 @@
 package lim.one.popovakazakova;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -43,7 +44,8 @@ public class SoundsActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
-            super.onBackPressed();
+            setResult(1);
+            finish();
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }

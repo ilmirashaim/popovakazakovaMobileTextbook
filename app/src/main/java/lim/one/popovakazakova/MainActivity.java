@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -22,13 +19,13 @@ import lim.one.popovakazakova.domain.helper.SectionHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.util.LessonExpandableListAdapter;
 
-public class ReadingActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_reading);
+        setContentView(R.layout.activity_main);
         SQLiteDatabase db = ((EbookApplication)getApplication()).getDatabase();
 
         LessonHelper lessonHelper = new LessonHelper(db);
@@ -50,15 +47,7 @@ public class ReadingActivity extends FragmentActivity {
         }
         LessonExpandableListAdapter adapter = new LessonExpandableListAdapter(getApplicationContext(), groups);
         listView.setAdapter(adapter);
-        Log.d("starting act", "");
         listView.setOnChildClickListener(new OnLessonSectionClickListener(groups));
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Log.d("group clicked", groupPosition + "");
-                return false;
-            }
-        });
 
     }
 
@@ -71,19 +60,14 @@ public class ReadingActivity extends FragmentActivity {
 
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-            Log.d("create an intent", "f");
             Lesson lesson = groups.get(groupPosition).first;
             Section section = groups.get(groupPosition).second.get(childPosition);
             if(section.getName().equals("Звуки")) {
-                Log.d("create an intent", "f");
-
                 Intent intent = new Intent(getOuter(), SoundsActivity.class);
                 Bundle b = new Bundle();
                 b.putLong("lesson_id", lesson.getId());
                 intent.putExtras(b);
-                Log.d("starting activity", "f");
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, 1);
             }
             return false;
         }
@@ -91,8 +75,8 @@ public class ReadingActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {}
-    public ReadingActivity getOuter() {
-        return ReadingActivity.this;
+    public MainActivity getOuter() {
+        return MainActivity.this;
     }
 
 }
