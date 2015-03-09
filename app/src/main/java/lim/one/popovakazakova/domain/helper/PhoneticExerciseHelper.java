@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.PhoneticExercise;
 import lim.one.popovakazakova.domain.Section;
+import lim.one.popovakazakova.domain.Sound;
 
 public class PhoneticExerciseHelper implements ISectionHelper{
     SQLiteDatabase db;
+    private static final String[] allColumns = new String[]{
+        "_id", "sound_id", "filename", "transcription", "title"
+    };
 
     public PhoneticExerciseHelper(SQLiteDatabase db) {
         this.db = db;
@@ -27,6 +32,21 @@ public class PhoneticExerciseHelper implements ISectionHelper{
         return count > 0;
     }
 
+    public List<PhoneticExercise> getPhoneticExercises(Sound sound){
+        List<PhoneticExercise> exercises = new ArrayList<>();
+        Cursor cursor = db.query("phonetic_exercise",
+                allColumns,
+                "sound_id=?", new String[]{sound.getId().toString()},
+                null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            PhoneticExercise phoneticExercise = cursorToPhoneticExercise(cursor);
+            cursor.moveToNext();
+            exercises.add(phoneticExercise);
+        }
+        return exercises;
+    }
+
     @Override
     public List<Section> getSections(Lesson lesson) {
         List<Section> sections = new ArrayList<>();
@@ -35,5 +55,15 @@ public class PhoneticExerciseHelper implements ISectionHelper{
             sections.add(new Section("Фонетические упражнения", this));
         }
         return sections;
+    }
+    private PhoneticExercise cursorToPhoneticExercise(Cursor cursor){
+        PhoneticExercise exercise = new PhoneticExercise();
+        exercise.setId(cursor.getLong(0));
+        exercise.setSoundId(cursor.getLong(1));
+        exercise.setFilename(cursor.getString(2));
+        exercise.setTranscription(cursor.getString(3));
+        exercise.setTitle(cursor.getString(4));
+
+        return exercise;
     }
 }

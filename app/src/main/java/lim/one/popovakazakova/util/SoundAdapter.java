@@ -3,21 +3,23 @@ package lim.one.popovakazakova.util;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Sound;
 
-public class SoundSlidePagerAdapter extends FragmentStatePagerAdapter {
+public class SoundAdapter extends FragmentStatePagerAdapter {
     List<Sound> sounds;
-    public SoundSlidePagerAdapter(FragmentManager fm, List<Sound> sounds) {
+    public SoundAdapter(FragmentManager fm, List<Sound> sounds) {
         super(fm);
         this.sounds = sounds;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return SoundSlideFragment.newInstance(sounds.get(position));
+        Log.d("get sound", position+"");
+        return SoundFragment.newInstance(sounds.get(position));
     }
 
     @Override

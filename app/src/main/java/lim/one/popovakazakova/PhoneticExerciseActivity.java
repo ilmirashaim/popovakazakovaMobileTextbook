@@ -1,41 +1,55 @@
 package lim.one.popovakazakova;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.Sound;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
+import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
-import lim.one.popovakazakova.util.SoundSlidePagerAdapter;
+import lim.one.popovakazakova.domain.helper.SoundUsageHelper;
+import lim.one.popovakazakova.util.PhoneticExerciseAdapter;
+import lim.one.popovakazakova.util.SoundInfo;
 import lim.one.popovakazakova.util.ZoomOutPageTransformer;
 
-public class SoundsActivity extends FragmentActivity {
+public class PhoneticExerciseActivity extends FragmentActivity {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("sounds act", "trying to start");
-
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sounds);
+        setContentView(R.layout.activity_phonetic_exercise);
         SQLiteDatabase db = ((EbookApplication)getApplication()).getDatabase();
 
         LessonHelper lessonHelper = new LessonHelper(db);
         SoundHelper soundHelper = new SoundHelper(db);
-
+        PhoneticExerciseHelper phoneticExerciseHelper = new PhoneticExerciseHelper(db);
+        SoundUsageHelper soundUsageHelper = new SoundUsageHelper(db);
         Bundle b = getIntent().getExtras();
         Long lessonId = b.getLong("lesson_id");
         Lesson lesson = lessonHelper.getById(lessonId);
+        List<Sound> sounds = soundHelper.getAllSounds(lesson);
+        List<SoundInfo> soundInfos = new ArrayList<>();
+        for(Sound sound : sounds) {
+            soundInfos.add(new SoundInfo(
+                    sound,
+                    soundUsageHelper.getSoundUsages(sound),
+                    phoneticExerciseHelper.getPhoneticExercises(sound)
+           ));
+        }
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new SoundSlidePagerAdapter(getSupportFragmentManager(), soundHelper.getAllSounds(lesson));
+        mPagerAdapter = new PhoneticExerciseAdapter(getSupportFragmentManager(),
+                soundInfos);
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
 

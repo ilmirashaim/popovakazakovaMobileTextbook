@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.PhoneticExercise;
 import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
@@ -63,12 +64,19 @@ public class MainActivity extends FragmentActivity {
             Lesson lesson = groups.get(groupPosition).first;
             Section section = groups.get(groupPosition).second.get(childPosition);
             if(section.getName().equals("Звуки")) {
-                Intent intent = new Intent(getOuter(), SoundsActivity.class);
+                Intent intent = new Intent(getOuter(), SoundActivity.class);
+                Bundle b = new Bundle();
+                b.putLong("lesson_id", lesson.getId());
+                intent.putExtras(b);
+                startActivityForResult(intent, 1);
+            } else if(section.getName().equals("Фонетические упражнения")){
+                Intent intent = new Intent(getOuter(), PhoneticExerciseActivity.class);
                 Bundle b = new Bundle();
                 b.putLong("lesson_id", lesson.getId());
                 intent.putExtras(b);
                 startActivityForResult(intent, 1);
             }
+
             return false;
         }
     }

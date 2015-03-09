@@ -2,7 +2,6 @@ package lim.one.popovakazakova.domain.helper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import lim.one.popovakazakova.domain.Lesson;
 import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.Sound;
 
-public class SoundHelper implements ISectionHelper{
+public class SoundHelper implements ISectionHelper {
     SQLiteDatabase db;
     private String[] allColumns = {"_id", "lesson_id", "title", "content"};
     private static final String tableName = "sound";
@@ -25,10 +24,9 @@ public class SoundHelper implements ISectionHelper{
 
 
         Cursor cursor = db.rawQuery("select " + getColumnsNames("") + " " +
-                        "from sound " +
+                        "from " + tableName + " " +
                         "where lesson_id=?",
                 new String[]{lesson.getId().toString()});
-        Log.d("starting query: ", cursor.getCount() + "");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Sound sound = cursorToSound(cursor);
@@ -61,8 +59,8 @@ public class SoundHelper implements ISectionHelper{
     }
 
 
-    public boolean hasSounds(Lesson lesson){
-        Cursor cursor = db.rawQuery("select count(*) from sound where lesson_id = ?",
+    public boolean hasSounds(Lesson lesson) {
+        Cursor cursor = db.rawQuery("select count(*) from " + tableName + " where lesson_id = ?",
                 new String[]{lesson.getId().toString()});
         cursor.moveToFirst();
         Integer count = cursor.getInt(0);
@@ -74,7 +72,7 @@ public class SoundHelper implements ISectionHelper{
     public List<Section> getSections(Lesson lesson) {
         List<Section> sections = new ArrayList<>();
 
-        if(hasSounds(lesson)){
+        if (hasSounds(lesson)) {
             sections.add(new Section("Звуки"));
         }
         return sections;

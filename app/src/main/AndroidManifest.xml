@@ -14,7 +14,12 @@
             android:theme="@style/Base.V21.Theme.AppCompat" >
         </activity>
         <activity
-            android:name=".SoundsActivity"
+            android:name=".SoundActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.V21.Theme.AppCompat" >
+        </activity>
+        <activity
+            android:name=".PhoneticExerciseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat" >
         </activity>
