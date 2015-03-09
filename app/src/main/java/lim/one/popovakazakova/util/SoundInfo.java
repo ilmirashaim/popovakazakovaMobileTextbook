@@ -1,7 +1,6 @@
 package lim.one.popovakazakova.util;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import java.util.List;
 
@@ -25,8 +24,7 @@ public class SoundInfo {
     }
 
     public Fragment getFragment(int position) {
-        Fragment f = null;
-        Log.d("position=", position+"");
+        Fragment f;
         if(position == 0){
             f = SoundUsageFragment.newInstance(sound, soundUsages);
         }else{

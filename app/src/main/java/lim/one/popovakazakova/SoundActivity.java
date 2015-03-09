@@ -12,7 +12,7 @@ import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.util.SoundAdapter;
 import lim.one.popovakazakova.util.ZoomOutPageTransformer;
 
-public class SoundActivity extends FragmentActivity {
+public class SoundActivity extends SecondaryActivity {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 

@@ -52,7 +52,7 @@ public class PhoneticExerciseHelper implements ISectionHelper{
         List<Section> sections = new ArrayList<>();
 
         if(hasPhoneticExercises(lesson)){
-            sections.add(new Section("Фонетические упражнения", this));
+            sections.add(new Section("Фонетические упражнения", this, Section.TYPE_PHONETIC_EXERCISES));
         }
         return sections;
     }

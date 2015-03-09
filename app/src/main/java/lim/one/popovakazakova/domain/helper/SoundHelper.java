@@ -22,11 +22,9 @@ public class SoundHelper implements ISectionHelper {
     public List<Sound> getAllSounds(Lesson lesson) {
         List<Sound> sounds = new ArrayList<Sound>();
 
-
-        Cursor cursor = db.rawQuery("select " + getColumnsNames("") + " " +
-                        "from " + tableName + " " +
-                        "where lesson_id=?",
-                new String[]{lesson.getId().toString()});
+        Cursor cursor = db.query(tableName, allColumns,
+                        "lesson_id=?",
+                new String[]{lesson.getId().toString()}, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Sound sound = cursorToSound(cursor);
@@ -73,7 +71,7 @@ public class SoundHelper implements ISectionHelper {
         List<Section> sections = new ArrayList<>();
 
         if (hasSounds(lesson)) {
-            sections.add(new Section("Звуки"));
+            sections.add(new Section("Звуки", this, Section.TYPE_SOUNDS));
         }
         return sections;
     }

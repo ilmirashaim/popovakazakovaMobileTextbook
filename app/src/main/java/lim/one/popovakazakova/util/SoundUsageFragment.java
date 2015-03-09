@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,14 +66,16 @@ public class SoundUsageFragment extends ListFragment {
             this.context = context;
             this.soundUsages = soundUsages;
         }
+        @Override
+        public int getCount() {
+            return soundUsages.size();
+        }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
-            Log.d("get view ", position + "");
 
             if (row == null) {
-                Log.d("row == null", "");
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
                 TextView spelling = (TextView) row.findViewById(R.id.spelling);
@@ -82,9 +83,7 @@ public class SoundUsageFragment extends ListFragment {
                 TextView pos = (TextView) row.findViewById(R.id.position);
                 SoundUsage soundUsage = soundUsages.get(position);
                 examples.setText(soundUsage.getExamples());
-                Log.d("examples = ", soundUsage.getExamples());
                 spelling.setText(soundUsage.getSpelling());
-                Log.d("position = ", soundUsage.getPosition());
                 pos.setText(soundUsage.getPosition());
             }
 

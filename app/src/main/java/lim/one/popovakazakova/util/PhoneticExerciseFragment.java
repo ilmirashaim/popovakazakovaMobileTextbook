@@ -1,7 +1,6 @@
 package lim.one.popovakazakova.util;
 
 
-import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ public class PhoneticExerciseFragment extends Fragment {
         final TextView title = (TextView) rootView.findViewById(R.id.ex_title);
         title.setText(getArguments().getString("title"));
 
-        final Button playButton = (Button)rootView.findViewById(R.id.play_button);
+        final Button playButton = (Button) rootView.findViewById(R.id.play_button);
         playButton.setOnClickListener(new OnPlayButtonListener());
 
         return rootView;
@@ -69,10 +68,9 @@ public class PhoneticExerciseFragment extends Fragment {
         public void onClick(View v) {
             try {
 
-                if (mp.isPlaying()){
+                if (mp.isPlaying()) {
                     mp.stop();
-                }else {
-
+                } else {
                     mp.prepare();
                     mp.start();
                 }
@@ -85,7 +83,7 @@ public class PhoneticExerciseFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(!isVisibleToUser && mp.isPlaying()){
+        if (!isVisibleToUser && mp.isPlaying()) {
             mp.stop();
         }
     }
