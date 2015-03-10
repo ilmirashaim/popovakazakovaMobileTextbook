@@ -81,10 +81,26 @@ public class PhoneticExerciseFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        stopPlaying();
+    }
+
+
+    protected void stopPlaying() {
+        if (mp == null) {
+            return;
+        }
+        if (mp.isPlaying()) {
+            mp.stop();
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser && mp.isPlaying()) {
-            mp.stop();
+        if (!isVisibleToUser) {
+           stopPlaying();
         }
     }
 }

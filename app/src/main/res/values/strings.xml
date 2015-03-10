@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">App</string>
 
-    <string name="next">next</string>
+    <string name="activity_lessons">Уроки</string>
+    <string name="activity_sounds">Звуки</string>
+    <string name="activity_phonetic_exercises">Фонетические упражнения</string>
+
     <string name="home_button_title">Home</string>
 </resources>

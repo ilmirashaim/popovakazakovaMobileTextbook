@@ -12,19 +12,27 @@
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat"
-            android:label="Уроки">
+            android:label="@string/activity_lessons">
         </activity>
         <activity
             android:name=".SoundActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat"
-            android:label="Звуки">
+            android:label="@string/activity_sounds">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            >
         </activity>
         <activity
             android:name=".PhoneticExerciseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat"
-            android:label="Фонетические упражнения">
+            android:label="@string/activity_phonetic_exercises">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            >
         </activity>
     </application>
 

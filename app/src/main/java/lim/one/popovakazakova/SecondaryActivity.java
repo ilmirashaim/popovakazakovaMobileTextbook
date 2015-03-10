@@ -1,5 +1,6 @@
 package lim.one.popovakazakova;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,12 +17,18 @@ abstract class SecondaryActivity extends ActionBarActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_home:
-                setResult(1);
-                finish();
-                return true;
+//            case R.id.action_home:
+//                setResult(1);
+//                finish();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
