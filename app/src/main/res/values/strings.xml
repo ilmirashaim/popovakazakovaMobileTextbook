@@ -7,4 +7,7 @@
     <string name="PhraseWordSection">Слова к фразам</string>
 
     <string name="home_button_title">Home</string>
+    <string name="play_button_title">Play</string>
+    <string name="train_button_title">Тренировка</string>
+    <string name="show_button_title">Show</string>
 </resources>

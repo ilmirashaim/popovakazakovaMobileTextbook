@@ -33,6 +33,7 @@ public class PhraseWordHelper{
             cursor.moveToNext();
             phraseWords.add(phraseWord);
         }
+        cursor.close();
         return phraseWords;
     }
 

@@ -17,7 +17,7 @@ import lim.one.popovakazakova.domain.Sound;
 import lim.one.popovakazakova.domain.SoundUsage;
 
 public class SoundUsageFragment extends ListFragment {
-    List<SoundUsage> soundUsages;
+    private List<SoundUsage> soundUsages;
 
     public static SoundUsageFragment newInstance(Sound sound, List<SoundUsage> soundUsages) {
         SoundUsageFragment f = new SoundUsageFragment();
@@ -48,7 +48,7 @@ public class SoundUsageFragment extends ListFragment {
         title.setText(getArguments().getString("sound"));
 
         setListAdapter(new SoundUsageAdapter(
-                getActivity(), R.layout.fragment_sound_usage_item, getSoundUsages()
+                getActivity(), R.layout.fragment_sound_usage_item
         ));
 
         return rootView;
@@ -58,17 +58,15 @@ public class SoundUsageFragment extends ListFragment {
 
         Context context;
         int layoutResourceId;
-        List<SoundUsage> soundUsages;
 
-        public SoundUsageAdapter(Context context, int layoutResourceId, List<SoundUsage> soundUsages) {
-            super(context, layoutResourceId, soundUsages);
+        public SoundUsageAdapter(Context context, int layoutResourceId) {
+            super(context, layoutResourceId, getSoundUsages());
             this.layoutResourceId = layoutResourceId;
             this.context = context;
-            this.soundUsages = soundUsages;
         }
         @Override
         public int getCount() {
-            return soundUsages.size();
+            return getSoundUsages().size();
         }
 
         @Override
@@ -81,7 +79,7 @@ public class SoundUsageFragment extends ListFragment {
                 TextView spelling = (TextView) row.findViewById(R.id.spelling);
                 TextView examples = (TextView) row.findViewById(R.id.examples);
                 TextView pos = (TextView) row.findViewById(R.id.position);
-                SoundUsage soundUsage = soundUsages.get(position);
+                SoundUsage soundUsage = getSoundUsages().get(position);
                 examples.setText(soundUsage.getExamples());
                 spelling.setText(soundUsage.getSpelling());
                 pos.setText(soundUsage.getPosition());

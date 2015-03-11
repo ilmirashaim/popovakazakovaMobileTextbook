@@ -32,6 +32,7 @@ public class SoundUsageHelper {
             cursor.moveToNext();
             soundUsages.add(soundUsage);
         }
+        cursor.close();
         return soundUsages;
     }
 

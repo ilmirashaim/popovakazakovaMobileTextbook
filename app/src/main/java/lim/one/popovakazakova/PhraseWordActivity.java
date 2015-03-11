@@ -1,51 +1,73 @@
 package lim.one.popovakazakova;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.View;
+
+import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.PhraseWord;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
-import lim.one.popovakazakova.domain.helper.SoundHelper;
-import lim.one.popovakazakova.util.SoundAdapter;
-import lim.one.popovakazakova.util.ZoomOutPageTransformer;
+import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
+import lim.one.popovakazakova.util.PhraseWordListFragment;
+import lim.one.popovakazakova.util.PhraseWordTrainFragment;
 
-public class PhraseWordActivity extends SecondaryActivity {
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
+public class PhraseWordActivity extends SecondaryActivity implements PhraseWordListFragment.TrainButtonListener{
+
+    private List<PhraseWord> phraseWords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sound);
-        EbookApplication application = ((EbookApplication)getApplication());
+        setContentView(R.layout.activity_phrase_word);
+        if (findViewById(R.id.fragment_container) == null) {
+            return;
+        }
+        if (savedInstanceState != null) {
+            return;
+        }
+        EbookApplication application = ((EbookApplication) getApplication());
 
         LessonHelper lessonHelper = application.getHelper(LessonHelper.class);
-        SoundHelper soundHelper = application.getHelper(SoundHelper.class);
+        PhraseWordHelper phraseWordHelper = application.getHelper(PhraseWordHelper.class);
 
         Bundle b = getIntent().getExtras();
         Long lessonId = b.getLong("lesson_id");
         Lesson lesson = lessonHelper.getById(lessonId);
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new SoundAdapter(getSupportFragmentManager(), soundHelper.getAllSounds(lesson));
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        List<PhraseWord> phraseWords = phraseWordHelper.getPhraseWords(lesson);
+        this.phraseWords = phraseWords;
+        Log.e("phrase words size", phraseWords.size() + "");
+        PhraseWordListFragment listFragment = PhraseWordListFragment.newInstance(phraseWords);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, listFragment).commit();
+    }
+    @Override
+    public void onBackPressed() {
+        setResult(1);
+        finish();
+    }
 
+    public List<PhraseWord> getPhraseWords() {
+        return phraseWords;
+    }
+
+    public void setPhraseWords(List<PhraseWord> phraseWords) {
+        this.phraseWords = phraseWords;
     }
 
     @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            setResult(1);
-            finish();
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
-    }
+    public void onTrain(View v) {
+        PhraseWordTrainFragment trainFragment =  PhraseWordTrainFragment.newInstance(getPhraseWords());
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, trainFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }
 
 

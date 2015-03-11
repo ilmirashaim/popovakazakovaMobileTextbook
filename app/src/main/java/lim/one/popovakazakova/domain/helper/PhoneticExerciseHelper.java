@@ -43,6 +43,7 @@ public class PhoneticExerciseHelper {
             cursor.moveToNext();
             exercises.add(phoneticExercise);
         }
+        cursor.close();
         return exercises;
     }
 
