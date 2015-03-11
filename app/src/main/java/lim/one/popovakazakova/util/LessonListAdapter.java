@@ -1,6 +1,7 @@
 package lim.one.popovakazakova.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +13,14 @@ import java.util.List;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Section;
+import lim.one.popovakazakova.section.ISection;
 
-public class LessonExpandableListAdapter extends BaseExpandableListAdapter {
+public class LessonListAdapter extends BaseExpandableListAdapter {
 
-    private List<Pair<Lesson, List<Section>>> mGroups;
+    private List<Pair<Lesson, List<ISection>>> mGroups;
     private Context mContext;
 
-    public LessonExpandableListAdapter(Context context, List<Pair<Lesson, List<Section>>> groups){
+    public LessonListAdapter(Context context, List<Pair<Lesson, List<ISection>>> groups){
         mContext = context;
         mGroups = groups;
     }
@@ -68,13 +69,6 @@ public class LessonExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.group_view, null);
         }
 
-        if (isExpanded){
-            //Изменяем что-нибудь, если текущая Group раскрыта
-        }
-        else{
-            //Изменяем что-нибудь, если текущая Group скрыта
-        }
-
         TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
         textGroup.setText(mGroups.get(groupPosition).first.getTitle());
 
@@ -91,7 +85,12 @@ public class LessonExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
-        textChild.setText(mGroups.get(groupPosition).second.get(childPosition).getName());
+        ISection section = mGroups.get(groupPosition).second.get(childPosition);
+        String name = section.getClass().getSimpleName();
+        Log.e("name = ", name);
+        int i = mContext.getResources().getIdentifier(name, "string", mContext.getPackageName());
+        String str = mContext.getResources().getString(i);
+        textChild.setText(str);
 
         return convertView;
     }

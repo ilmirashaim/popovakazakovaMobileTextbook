@@ -1,14 +1,8 @@
 package lim.one.popovakazakova;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +28,14 @@ public class PhoneticExerciseActivity extends SecondaryActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_phonetic_exercise);
-        SQLiteDatabase db = ((EbookApplication) getApplication()).getDatabase();
+        EbookApplication application = ((EbookApplication) getApplication());
 
-        LessonHelper lessonHelper = new LessonHelper(db);
-        SoundHelper soundHelper = new SoundHelper(db);
-        PhoneticExerciseHelper phoneticExerciseHelper = new PhoneticExerciseHelper(db);
-        SoundUsageHelper soundUsageHelper = new SoundUsageHelper(db);
+        LessonHelper lessonHelper = application.getHelper(LessonHelper.class);
+        SoundHelper soundHelper = application.getHelper(SoundHelper.class);
+        PhoneticExerciseHelper phoneticExerciseHelper = application.getHelper(PhoneticExerciseHelper.class);
+        SoundUsageHelper soundUsageHelper = application.getHelper(SoundUsageHelper.class);
+
+
         Bundle b = getIntent().getExtras();
         Long lessonId = b.getLong("lesson_id");
         Lesson lesson = lessonHelper.getById(lessonId);

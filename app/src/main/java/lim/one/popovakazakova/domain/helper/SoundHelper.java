@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.Sound;
 
-public class SoundHelper implements ISectionHelper {
+public class SoundHelper {
     SQLiteDatabase db;
     private String[] allColumns = {"_id", "lesson_id", "title", "content"};
     private static final String tableName = "sound";
@@ -23,7 +22,7 @@ public class SoundHelper implements ISectionHelper {
         List<Sound> sounds = new ArrayList<Sound>();
 
         Cursor cursor = db.query(tableName, allColumns,
-                        "lesson_id=?",
+                "lesson_id=?",
                 new String[]{lesson.getId().toString()}, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -66,13 +65,4 @@ public class SoundHelper implements ISectionHelper {
         return count > 0;
     }
 
-    @Override
-    public List<Section> getSections(Lesson lesson) {
-        List<Section> sections = new ArrayList<>();
-
-        if (hasSounds(lesson)) {
-            sections.add(new Section("Звуки", this, Section.TYPE_SOUNDS));
-        }
-        return sections;
-    }
 }

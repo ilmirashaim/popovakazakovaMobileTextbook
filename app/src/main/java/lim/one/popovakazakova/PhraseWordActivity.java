@@ -1,5 +1,6 @@
 package lim.one.popovakazakova;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,7 +11,7 @@ import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.util.SoundAdapter;
 import lim.one.popovakazakova.util.ZoomOutPageTransformer;
 
-public class SoundActivity extends SecondaryActivity {
+public class PhraseWordActivity extends SecondaryActivity {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 

@@ -14,13 +14,14 @@ public class SoundUsageHelper {
     private static final String[] allColumns = new String[]{
             "_id", "sound_id", "spelling", "examples", "position"
     };
+    private static final String tableName = "sound_usage";
 
     public SoundUsageHelper(SQLiteDatabase db) {
         this.db = db;
     }
     public List<SoundUsage> getSoundUsages(Sound sound){
         List<SoundUsage> soundUsages = new ArrayList<>();
-        Cursor cursor = db.query("sound_usage",
+        Cursor cursor = db.query(tableName,
                 allColumns,
                 "sound_id=?",
                 new String[]{sound.getId().toString()},

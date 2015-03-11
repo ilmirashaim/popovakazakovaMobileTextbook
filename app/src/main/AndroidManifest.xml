@@ -18,7 +18,7 @@
             android:name=".SoundActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat"
-            android:label="@string/activity_sounds">
+            android:label="@string/SoundSection">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -28,7 +28,17 @@
             android:name=".PhoneticExerciseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Base.V21.Theme.AppCompat"
-            android:label="@string/activity_phonetic_exercises">
+            android:label="@string/PhoneticExerciseSection">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            >
+        </activity>
+        <activity
+            android:name=".PhraseWordActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Base.V21.Theme.AppCompat"
+            android:label="@string/PhraseWordSection">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

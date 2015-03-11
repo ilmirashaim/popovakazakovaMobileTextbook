@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,12 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Section;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
-import lim.one.popovakazakova.domain.helper.SectionHelper;
+import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
-import lim.one.popovakazakova.util.LessonExpandableListAdapter;
+import lim.one.popovakazakova.domain.helper.SoundUsageHelper;
+import lim.one.popovakazakova.section.ISection;
+import lim.one.popovakazakova.section.PhoneticExerciseSection;
+import lim.one.popovakazakova.section.PhraseWordSection;
+import lim.one.popovakazakova.section.SectionHelper;
+import lim.one.popovakazakova.section.SoundSection;
+import lim.one.popovakazakova.util.LessonListAdapter;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -30,55 +34,70 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        SQLiteDatabase db = ((EbookApplication) getApplication()).getDatabase();
+        configure();
 
-        LessonHelper lessonHelper = new LessonHelper(db);
-        SoundHelper soundHelper = new SoundHelper(db);
-        PhoneticExerciseHelper phoneticExerciseHelper = new PhoneticExerciseHelper(db);
+        EbookApplication application = ((EbookApplication) getApplication());
 
-        SectionHelper sectionHelper = new SectionHelper();
-        sectionHelper.registerHelper(soundHelper);
-        sectionHelper.registerHelper(phoneticExerciseHelper);
+        List<Lesson> lessons = application.getHelper(LessonHelper.class).getAll();
 
-        List<Lesson> lessons = lessonHelper.getAll();
-
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.exListView);
-
-        List<Pair<Lesson, List<Section>>> groups = new ArrayList<>();
+        List<Pair<Lesson, List<ISection>>> groups = new ArrayList<>();
         for (Lesson l : lessons) {
-            List<Section> sections = sectionHelper.getAllSections(l);
-
+            List<ISection> sections = application.getSectionHelper().getAllSections(l);
             groups.add(new Pair<>(l, sections));
         }
-        LessonExpandableListAdapter adapter = new LessonExpandableListAdapter(getApplicationContext(), groups);
+        LessonListAdapter adapter = new LessonListAdapter(getApplicationContext(), groups);
+
+        ExpandableListView listView = (ExpandableListView) findViewById(R.id.exListView);
         listView.setAdapter(adapter);
         listView.setOnChildClickListener(new OnLessonSectionClickListener(groups));
 
     }
 
-    private class OnLessonSectionClickListener implements ExpandableListView.OnChildClickListener {
-        private List<Pair<Lesson, List<Section>>> groups;
+    private void configure() {
+        EbookApplication application = ((EbookApplication) getApplication());
+        SQLiteDatabase db = application.getDatabase();
 
-        private OnLessonSectionClickListener(List<Pair<Lesson, List<Section>>> groups) {
+        LessonHelper lessonHelper = new LessonHelper(db);
+        SoundHelper soundHelper = new SoundHelper(db);
+        SoundUsageHelper soundUsageHelper = new SoundUsageHelper(db);
+        PhoneticExerciseHelper phoneticExerciseHelper = new PhoneticExerciseHelper(db);
+        PhraseWordHelper phraseWordHelper = new PhraseWordHelper(db);
+        application.registerHelper(lessonHelper);
+        application.registerHelper(soundHelper);
+        application.registerHelper(soundUsageHelper);
+        application.registerHelper(phoneticExerciseHelper);
+        application.registerHelper(phraseWordHelper);
+
+        SoundSection soundSection = new SoundSection(soundHelper);
+        PhoneticExerciseSection phoneticExerciseSection = new PhoneticExerciseSection(phoneticExerciseHelper);
+        PhraseWordSection phraseWordSection = new PhraseWordSection(phraseWordHelper);
+
+        SectionHelper sectionHelper = new SectionHelper();
+        sectionHelper.registerSection(soundSection, SoundActivity.class);
+        sectionHelper.registerSection(phoneticExerciseSection, PhoneticExerciseActivity.class);
+        sectionHelper.registerSection(phraseWordSection, PhraseWordActivity.class);
+
+        application.setSectionHelper(sectionHelper);
+    }
+
+    private class OnLessonSectionClickListener implements ExpandableListView.OnChildClickListener {
+        private List<Pair<Lesson, List<ISection>>> groups;
+
+        private OnLessonSectionClickListener(List<Pair<Lesson, List<ISection>>> groups) {
             this.groups = groups;
         }
 
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
             Lesson lesson = groups.get(groupPosition).first;
-            Section section = groups.get(groupPosition).second.get(childPosition);
-            Intent intent = null;
-            if (section.getType().equals(Section.TYPE_SOUNDS)) {
-                intent = new Intent(getOuter(), SoundActivity.class);
-            } else if (section.getType().equals(Section.TYPE_PHONETIC_EXERCISES)) {
-                intent = new Intent(getOuter(), PhoneticExerciseActivity.class);
-            }
-            if(intent!=null) {
-                Bundle b = new Bundle();
-                b.putLong("lesson_id", lesson.getId());
-                intent.putExtras(b);
-                startActivityForResult(intent, 1);
-            }
+            ISection section = groups.get(groupPosition).second.get(childPosition);
+            EbookApplication application = ((EbookApplication) getApplication());
+            Class activityClass = application.getSectionHelper().getActivityClass(section);
+            Intent intent = new Intent(getOuter(), activityClass);
+            Bundle b = new Bundle();
+            b.putLong("lesson_id", lesson.getId());
+            intent.putExtras(b);
+            startActivityForResult(intent, 1);
 
             return false;
         }
@@ -101,12 +120,12 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("click", "hh");
         switch (item.getItemId()) {
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }
 
