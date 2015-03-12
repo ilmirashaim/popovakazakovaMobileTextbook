@@ -1,7 +1,6 @@
 package lim.one.popovakazakova.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +86,6 @@ public class LessonListAdapter extends BaseExpandableListAdapter {
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
         ISection section = mGroups.get(groupPosition).second.get(childPosition);
         String name = section.getClass().getSimpleName();
-        Log.e("name = ", name);
         int i = mContext.getResources().getIdentifier(name, "string", mContext.getPackageName());
         String str = mContext.getResources().getString(i);
         textChild.setText(str);

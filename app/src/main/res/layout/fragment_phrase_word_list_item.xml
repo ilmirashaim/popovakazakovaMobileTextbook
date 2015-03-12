@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
 
     <TextView
         style="?android:textAppearanceLarge"
@@ -20,23 +21,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:padding="5dp"
-
-        >
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
-            style="?android:textAppearance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/part_of_speech" />
+            android:textStyle="italic"
+            android:id="@+id/part_of_speech"/>
 
-        <TextView
-            style="?android:textAppearanceMedium"
+        <TextView style="?android:textAppearanceListItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:id="@+id/translation" />
+            android:id="@+id/translation"/>
     </LinearLayout>
 
 

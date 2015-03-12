@@ -2,7 +2,6 @@ package lim.one.popovakazakova.util;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ public class PhraseWordTrainFragment extends Fragment {
 
     public static PhraseWordTrainFragment newInstance(List<PhraseWord> words) {
         PhraseWordTrainFragment f = new PhraseWordTrainFragment();
-        Log.d("phrase words size", words.size() + "");
         f.setPhraseWords(words);
         return f;
     }

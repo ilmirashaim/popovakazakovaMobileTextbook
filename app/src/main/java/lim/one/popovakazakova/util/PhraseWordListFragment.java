@@ -3,8 +3,8 @@ package lim.one.popovakazakova.util;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,6 @@ public class PhraseWordListFragment extends ListFragment {
 
     public static PhraseWordListFragment newInstance(List<PhraseWord> words) {
         PhraseWordListFragment f = new PhraseWordListFragment();
-        Log.d("phrase words size", words.size()+"");
         f.setPhraseWords(words);
         return f;
     }
@@ -68,6 +67,12 @@ public class PhraseWordListFragment extends ListFragment {
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemClickListener(null);
+    }
+
     private class PhraseWordsAdapter extends ArrayAdapter<PhraseWord> {
         private Context context;
         private int layoutResourceId;
@@ -86,19 +91,29 @@ public class PhraseWordListFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
 
-            if (row == null) {
+//            if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
                 TextView word = (TextView) row.findViewById(R.id.word);
                 TextView partOfSpeech = (TextView) row.findViewById(R.id.part_of_speech);
                 TextView translation = (TextView) row.findViewById(R.id.translation);
+
                 PhraseWord phraseWord = getPhraseWords().get(position);
+
                 word.setText(phraseWord.getWord());
-                partOfSpeech.setText(phraseWord.getPartOfSpeech());
-                translation.setText(phraseWord.getTranslation());
-            }
+                fillOrHideTextView(partOfSpeech, phraseWord.getPartOfSpeech());
+                fillOrHideTextView(translation, phraseWord.getTranslation());
+//            }
 
             return row;
+        }
+
+        private void fillOrHideTextView(TextView view, String text) {
+            if(text == null || text.isEmpty()){
+                view.setVisibility(View.GONE);
+            }else{
+                view.setText(text);
+            }
         }
 
     }
