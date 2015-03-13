@@ -14,9 +14,12 @@ import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
 import lim.one.popovakazakova.util.PhraseWordListFragment;
 import lim.one.popovakazakova.util.PhraseWordTrainFragment;
 
-public class PhraseWordActivity extends SecondaryActivity implements PhraseWordListFragment.TrainButtonListener{
+public class PhraseWordActivity extends SecondaryActivity
+        implements PhraseWordListFragment.TrainButtonListener,
+        PhraseWordTrainFragment.OnTrainFinishListener {
 
     private List<PhraseWord> phraseWords;
+    private PhraseWordListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,11 @@ public class PhraseWordActivity extends SecondaryActivity implements PhraseWordL
         List<PhraseWord> phraseWords = phraseWordHelper.getPhraseWords(lesson);
         this.phraseWords = phraseWords;
         Log.e("phrase words size", phraseWords.size() + "");
-        PhraseWordListFragment listFragment = PhraseWordListFragment.newInstance(phraseWords);
+        listFragment = createListFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, listFragment).commit();
     }
+
     @Override
     public void onBackPressed() {
         setResult(1);
@@ -61,11 +65,27 @@ public class PhraseWordActivity extends SecondaryActivity implements PhraseWordL
 
     @Override
     public void onTrain(View v) {
-        PhraseWordTrainFragment trainFragment =  PhraseWordTrainFragment.newInstance(getPhraseWords());
+        PhraseWordTrainFragment trainFragment = PhraseWordTrainFragment.newInstance(getPhraseWords());
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, trainFragment);
         transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private PhraseWordListFragment createListFragment() {
+        return PhraseWordListFragment.newInstance(phraseWords);
+    }
+
+    @Override
+    public void onTrainFinished() {
+
+        if (listFragment == null) {
+            listFragment = createListFragment();
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, listFragment);
         transaction.commit();
     }
 }

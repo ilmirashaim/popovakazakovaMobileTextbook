@@ -15,15 +15,34 @@
         android:gravity="center"
         android:id="@+id/word" />
 
-    <TextView
-        style="?android:textAppearanceLarge"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_gravity="bottom"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="invisible"
-        android:id="@+id/translation" />
+        android:id="@+id/translation_part">
+        <TextView
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:id="@+id/part_of_speech" />
+        <TextView
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:id="@+id/translation" />
+    </LinearLayout>
+
 
     <Button
         android:layout_width="wrap_content"
@@ -31,4 +50,19 @@
         android:layout_gravity="bottom|center"
         android:text="@string/show_button_title"
         android:id="@+id/show_button" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:text="@string/next_button_title"
+        android:visibility="gone"
+        android:id="@+id/next_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:text="@string/finish_button_title"
+        android:visibility="gone"
+        android:id="@+id/finish_button" />
 </LinearLayout>

@@ -10,4 +10,6 @@
     <string name="play_button_title">Play</string>
     <string name="train_button_title">Тренировка</string>
     <string name="show_button_title">Show</string>
+    <string name="next_button_title">Next</string>
+    <string name="finish_button_title">Finish</string>
 </resources>
