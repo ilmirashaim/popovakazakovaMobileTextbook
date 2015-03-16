@@ -22,12 +22,12 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
     private boolean isPaused = false;
     private boolean shouldBeRefreshed = true;
     private PlayButton playButton;
-    private Collection<DialogCue> cues;
+    private List<DialogCue> cues;
     private Set<String> computerPart;
     private int next = 0;
     private Handler handler = new Handler();
 
-    public DialogPlayer(PlayButton playButton, Collection<DialogCue> cues, Set<String> computerPart) {
+    public DialogPlayer(PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
         this.playButton = playButton;
         this.cues = cues;
         mp = new MediaPlayer();
@@ -96,8 +96,11 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             play(nextCue);
             return;
         }
-        int difference = nextCue.getPosition() - forPlay.get(next - 1).getPosition();
-        Log.d("difference = ", difference+"" );
+        int difference = 0;
+        int previous = forPlay.get(next - 1).getPosition();
+        for(int i=nextCue.getPosition()-2; i >= previous; i--){
+            difference += cues.get(i).getText().length();
+        }
 
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -105,7 +108,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
                     play(nextCue);
                 }
             }
-        }, 1000 * difference);
+        }, 100 * difference);
     }
 
     private void play(DialogCue nextCue) {
