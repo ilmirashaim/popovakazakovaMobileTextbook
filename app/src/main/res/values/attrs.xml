@@ -9,4 +9,9 @@
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
+
+    <declare-styleable name="play_button">
+        <attr name="state_playing" format="boolean" />
+    </declare-styleable>
+
 </resources>

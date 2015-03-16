@@ -5,6 +5,7 @@
     <string name="SoundSection">Звуки</string>
     <string name="PhoneticExerciseSection">Фонетические упражнения</string>
     <string name="PhraseWordSection">Слова к фразам</string>
+    <string name="DialogSection">Диалоги</string>
 
     <string name="home_button_title">Home</string>
     <string name="play_button_title">Play</string>
@@ -12,4 +13,5 @@
     <string name="show_button_title">Show</string>
     <string name="next_button_title">Next</string>
     <string name="finish_button_title">Finish</string>
+    <string name="play_button_description">play button</string>
 </resources>

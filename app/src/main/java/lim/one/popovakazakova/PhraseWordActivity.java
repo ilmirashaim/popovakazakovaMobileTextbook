@@ -43,7 +43,6 @@ public class PhraseWordActivity extends SecondaryActivity
 
         List<PhraseWord> phraseWords = phraseWordHelper.getPhraseWords(lesson);
         this.phraseWords = phraseWords;
-        Log.e("phrase words size", phraseWords.size() + "");
         listFragment = createListFragment();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, listFragment).commit();
