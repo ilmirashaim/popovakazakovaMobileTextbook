@@ -5,7 +5,7 @@ public class DialogCue {
     private Long dialogId;
     private String text;
     private String characterName;
-    private Long position;
+    private Integer position;
 
     private static final String filenameTemplate = "dialogs/dialog%d_%d.mp3";
 
@@ -47,11 +47,11 @@ public class DialogCue {
         return String.format(filenameTemplate, dialogId, id);
     }
 
-    public Long getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(Long position) {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 

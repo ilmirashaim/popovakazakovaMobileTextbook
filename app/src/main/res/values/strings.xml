@@ -14,4 +14,6 @@
     <string name="next_button_title">Next</string>
     <string name="finish_button_title">Finish</string>
     <string name="play_button_description">play button</string>
+    <string name="play_sign">▶</string>
+    <string name="stop_sign">ǁ</string>
 </resources>

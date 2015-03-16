@@ -36,8 +36,10 @@ public class PlayButton extends Button {
             public void onClick(View view) {
                 if (isPlaying) {
                     onStateChangeListener.onPause();
+                    setText(getResources().getString(R.string.play_sign));
                 } else {
                     onStateChangeListener.onPlay();
+                    setText("||");
                 }
 
                 isPlaying = !isPlaying;
@@ -52,5 +54,10 @@ public class PlayButton extends Button {
             mergeDrawableStates(drawableState, STATE_PLAYING);
         }
         return drawableState;
+    }
+
+    public void onFinished(){
+        isPlaying = false;
+        setText(getResources().getString(R.string.play_sign));
     }
 }

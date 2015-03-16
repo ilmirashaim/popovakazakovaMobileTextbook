@@ -63,7 +63,7 @@ public class DialogHelper {
         DialogCue dialogCue = new DialogCue();
         dialogCue.setId(cursor.getLong(0));
         dialogCue.setDialogId(cursor.getLong(1));
-        dialogCue.setPosition(cursor.getLong(2));
+        dialogCue.setPosition(cursor.getInt(2));
         dialogCue.setCharacterName(cursor.getString(3));
         dialogCue.setText(cursor.getString(4));
         return dialogCue;
