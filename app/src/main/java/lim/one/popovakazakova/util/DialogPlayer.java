@@ -131,7 +131,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             public void run() {
                 play(nextCue, nextPos);
             }
-        }, 120 * difference);
+        }, (int)(500 * Math.log(difference)));
     }
 
     synchronized private void play(DialogCue nextCue, int listPos) {
