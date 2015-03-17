@@ -85,7 +85,8 @@ public class DialogActivity extends SecondaryActivity implements
         int i = 0;
         for (String roleName : roleNames) {
             ToggleButton button = new ToggleButton(this);
-            button.setLayoutParams(new LinearLayout.LayoutParams(toPixels(60), toPixels(60)));
+            button.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, toPixels(60)));
             button.setTextOff(roleName);
             button.setTextOn(roleName);
             button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));

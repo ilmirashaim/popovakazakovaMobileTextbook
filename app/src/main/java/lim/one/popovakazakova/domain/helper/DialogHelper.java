@@ -2,8 +2,11 @@ package lim.one.popovakazakova.domain.helper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Dialog;
@@ -56,6 +59,14 @@ public class DialogHelper {
             cursor.moveToNext();
         }
         cursor.close();
+        Collections.sort(dialogCues, new Comparator<DialogCue>() {
+            @Override
+            public int compare(DialogCue lhs, DialogCue rhs) {
+                return (lhs.getPosition() - rhs.getPosition());
+            }
+        });
+        Log.e("size", dialogCues.size()+"");
+        Log.e("first", dialogCues.iterator().next().getText());
         return dialogCues;
     }
 

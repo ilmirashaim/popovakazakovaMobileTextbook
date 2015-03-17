@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
 
     private MediaPlayer mp;
     private List<DialogCue> forPlay;
-    private int pos;
+    private Integer pos;
     private boolean isPaused = false;
     private boolean shouldBeRefreshed = true;
     private PlayButton playButton;
@@ -47,14 +46,18 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             refreshQueue();
             shouldBeRefreshed = false;
         }
-        if (isPaused) {
+        if (isPaused && pos != null) {
             mp.seekTo(pos);
             mp.start();
-            isPaused = false;
+            resetPause();
             return;
         }
-
         playNext();
+    }
+
+    private void resetPause() {
+        isPaused = false;
+        pos = null;
     }
 
     synchronized public void setComputerPart(Set<String> computerPart) {
@@ -77,43 +80,53 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
         if (mp.isPlaying()) {
             mp.pause();
             pos = mp.getCurrentPosition();
-            isPaused = true;
+        } else {
+            pos = null;
         }
+        isPaused = true;
     }
 
     synchronized private void playNext() {
-        if (next == forPlay.size()) {
-            isPaused = false;
+        if (next >= forPlay.size()) {
+            resetPause();
             playButton.onFinished();
             next = 0;
             return;
         }
+        final int nextPos = next;
+
+        final DialogCue nextCue = forPlay.get(nextPos);
+
         if (isPaused) {
+            resetPause();
+            play(nextCue, nextPos);
             return;
         }
-        final DialogCue nextCue = forPlay.get(next);
         if (next == 0) {
-            play(nextCue);
+            play(nextCue, nextPos);
             return;
         }
         int difference = 0;
         int previous = forPlay.get(next - 1).getPosition();
-        for(int i=nextCue.getPosition()-2; i >= previous; i--){
+        for (int i = nextCue.getPosition() - 2; i >= previous; i--) {
             difference += cues.get(i).getText().length();
         }
 
         handler.postDelayed(new Runnable() {
             public void run() {
-                synchronized (DialogPlayer.this) {
-                    play(nextCue);
-                }
+                play(nextCue, nextPos);
             }
-        }, 100 * difference);
+        }, 150 * difference);
     }
 
-    private void play(DialogCue nextCue) {
+    synchronized private void play(DialogCue nextCue, int listPos) {
+        if (isPaused) {
+            return;
+        }
+        if(listPos < next){
+            return;
+        }
         String filename = nextCue.getFilename();
-        Log.d("playing", filename);
         try {
             stopPlaying();
             mp.reset();

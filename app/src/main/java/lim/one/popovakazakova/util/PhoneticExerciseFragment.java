@@ -70,9 +70,11 @@ public class PhoneticExerciseFragment extends Fragment {
 
                 if (mp.isPlaying()) {
                     mp.stop();
+                    ((Button)v).setText(R.string.play_sign);
                 } else {
                     mp.prepare();
                     mp.start();
+                    ((Button)v).setText("||");
                 }
             } catch (Exception e) {
                 Log.e("media player exception", "on click", e);
@@ -87,7 +89,7 @@ public class PhoneticExerciseFragment extends Fragment {
     }
 
 
-    protected void stopPlaying() {
+    private void stopPlaying() {
         if (mp == null) {
             return;
         }

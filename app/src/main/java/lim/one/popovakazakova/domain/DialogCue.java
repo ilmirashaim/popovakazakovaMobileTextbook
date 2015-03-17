@@ -44,7 +44,7 @@ public class DialogCue {
     }
 
     public String getFilename() {
-        return String.format(filenameTemplate, dialogId, id);
+        return String.format(filenameTemplate, dialogId, position);
     }
 
     public Integer getPosition() {

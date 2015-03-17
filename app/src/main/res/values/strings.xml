@@ -10,10 +10,11 @@
     <string name="home_button_title">Home</string>
     <string name="play_button_title">Play</string>
     <string name="train_button_title">Тренировка</string>
-    <string name="show_button_title">Show</string>
-    <string name="next_button_title">Next</string>
-    <string name="finish_button_title">Finish</string>
+    <string name="show_button_title">Показать</string>
+    <string name="next_button_title">Дальше</string>
+    <string name="finish_button_title">Закончить</string>
     <string name="play_button_description">play button</string>
     <string name="play_sign">▶</string>
-    <string name="stop_sign">ǁ</string>
+    <string name="pause_sign">ǁ</string>
+    <string name="stop_sign">▉</string>
 </resources>

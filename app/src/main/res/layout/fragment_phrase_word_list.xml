@@ -3,6 +3,7 @@
     android:id="@+id/content"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/black_overlay"
     android:layout_height="match_parent">
 
     <Button
