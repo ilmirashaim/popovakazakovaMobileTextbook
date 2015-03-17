@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,10 @@ import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.DialogCue;
 import lim.one.popovakazakova.domain.PhraseWord;
 
-public class DialogListFragment extends ListFragment {
+public class DialogListFragment extends ListFragment implements DialogPlayer.OnPlayListener {
     private List<DialogCue> cues;
     private DialogCueManager dialogCueManager;
+    private DialogCue playing = null;
 
     public static DialogListFragment newInstance(List<DialogCue> cues) {
         DialogListFragment f = new DialogListFragment();
@@ -35,6 +37,15 @@ public class DialogListFragment extends ListFragment {
 
     public void setDialogCues(List<DialogCue> cues) {
         this.cues = cues;
+    }
+
+    @Override
+    public void onPlay(DialogCue dialogCue) {
+        playing = dialogCue;
+        if(dialogCue != null) {
+            getListView().smoothScrollToPosition(dialogCue.getPosition() - 1);
+        }
+        ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     public interface DialogCueManager {
@@ -92,12 +103,22 @@ public class DialogListFragment extends ListFragment {
 
             DialogCue dialogCue = getDialogCues().get(position);
             Set<String> computerPart = dialogCueManager.getComputerPart();
+            TextView selected;
             if (computerPart.contains(dialogCue.getCharacterName())) {
                 computer.setText(dialogCue.getText());
                 human.setText("");
+                selected = computer;
             } else {
                 human.setText(dialogCue.getText());
                 computer.setText("");
+                selected = human;
+            }
+            if (playing != null) {
+                selected.setTextColor(getResources().getColor(
+                        dialogCue.getPosition().equals(playing.getPosition()) ?
+                                R.color.text :
+                                R.color.normalText
+                ));
             }
 
             return row;

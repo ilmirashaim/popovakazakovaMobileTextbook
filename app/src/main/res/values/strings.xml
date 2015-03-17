@@ -15,6 +15,6 @@
     <string name="finish_button_title">Закончить</string>
     <string name="play_button_description">play button</string>
     <string name="play_sign">▶</string>
-    <string name="pause_sign">ǁ</string>
+    <string name="pause_sign">||</string>
     <string name="stop_sign">▉</string>
 </resources>

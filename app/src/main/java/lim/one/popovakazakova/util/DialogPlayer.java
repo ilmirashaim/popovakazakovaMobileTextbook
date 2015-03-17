@@ -16,15 +16,21 @@ import lim.one.popovakazakova.util.view.PlayButton;
 public class DialogPlayer implements PlayButton.OnStateChangeListener {
 
     private MediaPlayer mp;
-    private List<DialogCue> forPlay;
+    private Handler handler = new Handler();
     private Integer pos;
     private boolean isPaused = false;
     private boolean shouldBeRefreshed = true;
     private PlayButton playButton;
     private List<DialogCue> cues;
+    private List<DialogCue> forPlay;
     private Set<String> computerPart;
     private int next = 0;
-    private Handler handler = new Handler();
+
+    private OnPlayListener onPlayListener;
+
+    public interface OnPlayListener{
+        public void onPlay(DialogCue dialogCue);
+    }
 
     public DialogPlayer(PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
         this.playButton = playButton;
@@ -37,6 +43,14 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             }
         });
         this.computerPart = computerPart;
+    }
+
+    public OnPlayListener getOnPlayListener() {
+        return onPlayListener;
+    }
+
+    public void setOnPlayListener(OnPlayListener onPlayListener) {
+        this.onPlayListener = onPlayListener;
     }
 
     @Override
@@ -73,6 +87,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             }
         }
         next = 0;
+        onPlayListener.onPlay(null);
     }
 
     @Override
@@ -116,14 +131,14 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             public void run() {
                 play(nextCue, nextPos);
             }
-        }, 150 * difference);
+        }, 120 * difference);
     }
 
     synchronized private void play(DialogCue nextCue, int listPos) {
         if (isPaused) {
             return;
         }
-        if(listPos < next){
+        if(listPos != next){
             return;
         }
         String filename = nextCue.getFilename();
@@ -133,6 +148,9 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
             AssetFileDescriptor afd = playButton.getContext().getAssets().openFd(filename);
             mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             mp.prepare();
+            if(onPlayListener != null) {
+                onPlayListener.onPlay(nextCue);
+            }
             mp.start();
         } catch (IOException e) {
             Log.e("media player exception", "in playing " + filename, e);

@@ -57,9 +57,12 @@ public class DialogActivity extends SecondaryActivity implements
         List<DialogCue> cues = dialogHelper.getDialogCues(dialog);
         this.cues = cues;
 
+        listFragment = DialogListFragment.newInstance(cues);
+
         PlayButton playButton = (PlayButton) findViewById(R.id.play_button);
         dialogPlayer = new DialogPlayer(playButton, cues, computerPart);
         playButton.setOnStateChangeListener(dialogPlayer);
+        dialogPlayer.setOnPlayListener(listFragment);
 
         Map<String, List<DialogCue>> parts = new HashMap<>();
         for (DialogCue cue : cues) {
@@ -73,7 +76,6 @@ public class DialogActivity extends SecondaryActivity implements
         }
         computerPart.addAll(parts.keySet());
 
-        listFragment = DialogListFragment.newInstance(cues);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.list_container, listFragment).commit();
 

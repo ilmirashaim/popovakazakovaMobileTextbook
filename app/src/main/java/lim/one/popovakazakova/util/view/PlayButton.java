@@ -35,14 +35,14 @@ public class PlayButton extends Button {
             @Override
             public void onClick(View view) {
                 if (isPlaying) {
-                    onStateChangeListener.onPause();
                     setText(getResources().getString(R.string.play_sign));
+                    isPlaying = false;
+                    onStateChangeListener.onPause();
                 } else {
+                    setText(getResources().getString(R.string.pause_sign));
+                    isPlaying = true;
                     onStateChangeListener.onPlay();
-                    setText("||");
                 }
-
-                isPlaying = !isPlaying;
             }
         });
     }

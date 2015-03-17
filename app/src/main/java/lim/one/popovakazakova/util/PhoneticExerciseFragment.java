@@ -74,7 +74,7 @@ public class PhoneticExerciseFragment extends Fragment {
                 } else {
                     mp.prepare();
                     mp.start();
-                    ((Button)v).setText("||");
+                    ((Button)v).setText(R.string.pause_sign);
                 }
             } catch (Exception e) {
                 Log.e("media player exception", "on click", e);
