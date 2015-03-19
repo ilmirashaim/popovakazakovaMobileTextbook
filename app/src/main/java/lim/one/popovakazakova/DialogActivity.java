@@ -91,7 +91,6 @@ public class DialogActivity extends SecondaryActivity implements
             button.setTextOn(roleName);
             button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));
             button.setChecked(true);
-            button.setTextColor(getResources().getColor(R.color.colorAccent));
             roleButtonLayout.addView(button);
             button.setOnCheckedChangeListener(new OnRoleCheckedListener());
             i++;

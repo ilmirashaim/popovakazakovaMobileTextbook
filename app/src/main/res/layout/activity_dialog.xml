@@ -19,7 +19,6 @@
             android:id="@+id/play_button"
             android:text="@string/play_sign"
             android:textSize="16sp"
-            android:textColor="@color/colorAccent"
             android:contentDescription="@string/play_button_description"/>
         </LinearLayout>
 
