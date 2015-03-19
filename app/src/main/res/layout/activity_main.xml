@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black_overlay"
     tools:context="lim.one.popovakazakova.MainActivity">
+
+    <include layout="@layout/app_toolbar"
+        android:id="@+id/app_toolbar" />
 
     <ExpandableListView
         android:id="@+id/exListView"

@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black_overlay">
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:text="@string/play_sign"
-                android:textColor="@color/text"
+                android:textColor="@color/colorAccent"
                 android:id="@+id/play_button"
                 android:layout_gravity="center" />
 

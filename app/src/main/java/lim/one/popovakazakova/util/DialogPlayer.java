@@ -24,6 +24,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
     private List<DialogCue> cues;
     private List<DialogCue> forPlay;
     private Set<String> computerPart;
+    private boolean isFinished = false;
     private int next = 0;
 
     private OnPlayListener onPlayListener;
@@ -138,6 +139,9 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
         if (isPaused) {
             return;
         }
+        if(isFinished){
+            return;
+        }
         if(listPos != next){
             return;
         }
@@ -165,5 +169,10 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener {
         if (mp.isPlaying()) {
             mp.stop();
         }
+    }
+
+    synchronized public void onFinished(){
+        stopPlaying();
+        isFinished = true;
     }
 }

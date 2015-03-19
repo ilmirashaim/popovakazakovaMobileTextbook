@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import java.util.Set;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.DialogCue;
-import lim.one.popovakazakova.domain.PhraseWord;
 
 public class DialogListFragment extends ListFragment implements DialogPlayer.OnPlayListener {
     private List<DialogCue> cues;
@@ -116,8 +114,8 @@ public class DialogListFragment extends ListFragment implements DialogPlayer.OnP
             if (playing != null) {
                 selected.setTextColor(getResources().getColor(
                         dialogCue.getPosition().equals(playing.getPosition()) ?
-                                R.color.text :
-                                R.color.normalText
+                                R.color.colorAccent :
+                                R.color.text
                 ));
             }
 

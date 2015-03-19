@@ -25,9 +25,9 @@ public class PhoneticExerciseActivity extends SecondaryActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_phonetic_exercise);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_phonetic_exercise);
         EbookApplication application = ((EbookApplication) getApplication());
 
         LessonHelper lessonHelper = application.getHelper(LessonHelper.class);

@@ -16,9 +16,9 @@ public class SoundActivity extends SecondaryActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_sound);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sound);
         EbookApplication application = ((EbookApplication)getApplication());
 
         LessonHelper lessonHelper = application.getHelper(LessonHelper.class);

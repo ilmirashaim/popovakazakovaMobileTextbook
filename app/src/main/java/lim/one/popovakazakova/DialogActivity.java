@@ -1,7 +1,6 @@
 package lim.one.popovakazakova;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -35,9 +34,8 @@ public class DialogActivity extends SecondaryActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.e("start", "dialog");
         setContentView(R.layout.activity_dialog);
+        super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             return;
         }
@@ -93,7 +91,7 @@ public class DialogActivity extends SecondaryActivity implements
             button.setTextOn(roleName);
             button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));
             button.setChecked(true);
-            button.setTextColor(getResources().getColor(R.color.text));
+            button.setTextColor(getResources().getColor(R.color.colorAccent));
             roleButtonLayout.addView(button);
             button.setOnCheckedChangeListener(new OnRoleCheckedListener());
             i++;
@@ -116,11 +114,26 @@ public class DialogActivity extends SecondaryActivity implements
             dialogPlayer.setComputerPart(computerPart);
         }
     }
+    @Override
+    public void onStop(){
+        super.onStop();
+        if (dialogPlayer != null) {
+            dialogPlayer.onFinished();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (dialogPlayer != null) {
+            dialogPlayer.onFinished();
+        }
+    }
 
     @Override
     public void onBackPressed() {
         if (dialogPlayer != null) {
-            dialogPlayer.stopPlaying();
+            dialogPlayer.onFinished();
         }
         setResult(1);
         finish();

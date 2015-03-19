@@ -23,9 +23,9 @@ public class PhraseWordActivity extends SecondaryActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_phrase_word);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_phrase_word);
         if (findViewById(R.id.fragment_container) == null) {
             return;
         }
