@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Учебник по французскому</string>
 
     <string name="activity_lessons">Уроки</string>
     <string name="SoundSection">Звуки</string>

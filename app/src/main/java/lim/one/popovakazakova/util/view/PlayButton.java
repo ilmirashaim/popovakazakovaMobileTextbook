@@ -35,11 +35,11 @@ public class PlayButton extends Button {
             @Override
             public void onClick(View view) {
                 if (isPlaying) {
-                    setText(getResources().getString(R.string.play_sign));
+                    setBackgroundResource(R.drawable.ic_av_play_arrow);
                     isPlaying = false;
                     onStateChangeListener.onPause();
                 } else {
-                    setText(getResources().getString(R.string.pause_sign));
+                    setBackgroundResource(R.drawable.ic_av_pause);
                     isPlaying = true;
                     onStateChangeListener.onPlay();
                 }
@@ -58,6 +58,6 @@ public class PlayButton extends Button {
 
     public void onFinished(){
         isPlaying = false;
-        setText(getResources().getString(R.string.play_sign));
+        setBackgroundResource(R.drawable.ic_av_play_arrow);
     }
 }

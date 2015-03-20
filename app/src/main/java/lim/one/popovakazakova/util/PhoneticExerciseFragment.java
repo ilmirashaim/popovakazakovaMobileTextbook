@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.PhoneticExercise;
+import lim.one.popovakazakova.util.view.PlayButton;
 
 public class PhoneticExerciseFragment extends Fragment {
     private MediaPlayer mp = new MediaPlayer();
@@ -44,7 +45,7 @@ public class PhoneticExerciseFragment extends Fragment {
         title.setText(getArguments().getString("title"));
 
         final Button playButton = (Button) rootView.findViewById(R.id.play_button);
-        playButton.setOnClickListener(new OnPlayButtonListener());
+        playButton.setOnClickListener(new OnPlayButtonListener(playButton));
 
         return rootView;
     }
@@ -52,15 +53,14 @@ public class PhoneticExerciseFragment extends Fragment {
 
     private class OnPlayButtonListener implements View.OnClickListener {
 
-        private OnPlayButtonListener() {
-            String filename = getArguments().getString("filename");
-
-            try {
-                AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd(filename);
-                mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-            } catch (IOException e) {
-                Log.e("media player exception", "in constructor", e);
-            }
+        private OnPlayButtonListener(final Button playButton) {
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.reset();
+                    playButton.setBackgroundResource(R.drawable.ic_av_stop);
+                }
+            });
         }
 
 
@@ -70,11 +70,15 @@ public class PhoneticExerciseFragment extends Fragment {
 
                 if (mp.isPlaying()) {
                     mp.stop();
-                    ((Button)v).setText(R.string.play_sign);
+                    mp.reset();
+                    ((Button) v).setBackgroundResource(R.drawable.ic_av_play_arrow);
                 } else {
+                    String filename = getArguments().getString("filename");
+                    AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd(filename);
+                    mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                     mp.prepare();
                     mp.start();
-                    ((Button)v).setText(R.string.pause_sign);
+                    ((Button) v).setBackgroundResource(R.drawable.ic_av_stop);
                 }
             } catch (Exception e) {
                 Log.e("media player exception", "on click", e);
@@ -102,7 +106,7 @@ public class PhoneticExerciseFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (!isVisibleToUser) {
-           stopPlaying();
+            stopPlaying();
         }
     }
 }
