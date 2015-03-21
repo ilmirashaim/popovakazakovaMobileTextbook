@@ -1,0 +1,44 @@
+{
+       "keylines": [
+        { "offset": 16,
+          "from": "LEFT" },
+        { "offset": 72,
+          "from": "LEFT" },
+        { "offset": 16,
+          "from": "RIGHT" },
+        { "offset": 64,
+          "from": "TOP" },
+
+        { "offset": 112,
+          "from": "TOP" },
+        { "offset": 160,
+          "from": "TOP" },
+        { "offset": 208,
+          "from": "TOP" },
+        { "offset": 256,
+          "from": "TOP" },
+        { "offset": 304,
+          "from": "TOP" },
+        { "offset": 352,
+          "from": "TOP" },
+        { "offset": 400,
+          "from": "TOP" },
+        { "offset": 448,
+          "from": "TOP" },
+        { "offset": 496,
+          "from": "TOP" },
+        { "offset": 544,
+          "from": "TOP" }
+    ],
+    "spacings": [
+        { "offset": 0,
+          "size": 16,
+          "from": "LEFT" },
+        { "offset": 56,
+          "size": 16,
+          "from": "LEFT" },
+        { "offset": 0,
+          "size": 16,
+          "from": "RIGHT" }
+    ]
+}
