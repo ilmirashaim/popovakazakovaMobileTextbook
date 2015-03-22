@@ -1,18 +1,13 @@
 package lim.one.popovakazakova;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
@@ -23,12 +18,11 @@ import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.domain.helper.SoundUsageHelper;
 import lim.one.popovakazakova.section.DialogSection;
-import lim.one.popovakazakova.section.ISection;
 import lim.one.popovakazakova.section.PhoneticExerciseSection;
 import lim.one.popovakazakova.section.PhraseWordSection;
 import lim.one.popovakazakova.section.SectionHelper;
 import lim.one.popovakazakova.section.SoundSection;
-import lim.one.popovakazakova.util.LessonListAdapter;
+import lim.one.popovakazakova.util.LessonListFragment;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -38,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         configure();
@@ -47,16 +41,9 @@ public class MainActivity extends ActionBarActivity {
 
         List<Lesson> lessons = application.getHelper(LessonHelper.class).getAll();
 
-        List<Pair<Lesson, List<ISection>>> groups = new ArrayList<>();
-        for (Lesson l : lessons) {
-            List<ISection> sections = application.getSectionHelper().getAllSections(l);
-            groups.add(new Pair<>(l, sections));
-        }
-        LessonListAdapter adapter = new LessonListAdapter(getApplicationContext(), groups);
-
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.exListView);
-        listView.setAdapter(adapter);
-        listView.setOnChildClickListener(new OnLessonSectionClickListener(groups));
+        LessonListFragment lessonListFragment = LessonListFragment.newInstance(lessons);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.lesson_list_container, lessonListFragment).commit();
 
     }
 
@@ -89,29 +76,6 @@ public class MainActivity extends ActionBarActivity {
         sectionHelper.registerSection(dialogSection, DialogActivity.class);
 
         application.setSectionHelper(sectionHelper);
-    }
-
-    private class OnLessonSectionClickListener implements ExpandableListView.OnChildClickListener {
-        private List<Pair<Lesson, List<ISection>>> groups;
-
-        private OnLessonSectionClickListener(List<Pair<Lesson, List<ISection>>> groups) {
-            this.groups = groups;
-        }
-
-        @Override
-        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-            Lesson lesson = groups.get(groupPosition).first;
-            ISection section = groups.get(groupPosition).second.get(childPosition);
-            EbookApplication application = ((EbookApplication) getApplication());
-            Class activityClass = application.getSectionHelper().getActivityClass(section);
-            Intent intent = new Intent(getOuter(), activityClass);
-            Bundle b = new Bundle();
-            b.putLong("lesson_id", lesson.getId());
-            intent.putExtras(b);
-            startActivityForResult(intent, 1);
-
-            return false;
-        }
     }
 
     @Override

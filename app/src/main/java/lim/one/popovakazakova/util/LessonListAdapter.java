@@ -1,101 +1,86 @@
 package lim.one.popovakazakova.util;
 
 import android.content.Context;
-import android.util.Pair;
+import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Map;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.section.ISection;
 
-public class LessonListAdapter extends BaseExpandableListAdapter {
+public class LessonListAdapter extends ArrayAdapter<Lesson> {
 
-    private List<Pair<Lesson, List<ISection>>> mGroups;
-    private Context mContext;
+    private Map<Long, Pair<ListAdapter, AdapterView.OnItemClickListener>> lessonSectionHelpers;
+    private List<Lesson> lessons;
+    private Context context;
 
-    public LessonListAdapter(Context context, List<Pair<Lesson, List<ISection>>> groups){
-        mContext = context;
-        mGroups = groups;
+    private int expanded = -1;
+
+    public LessonListAdapter(Context context,
+                             List<Lesson> lessons,
+                             Map<Long, Pair<ListAdapter, AdapterView.OnItemClickListener>> lessonSectionHelpers) {
+        super(context, R.layout.lesson_view, lessons);
+        this.context = context;
+        this.lessonSectionHelpers = lessonSectionHelpers;
+        this.lessons = lessons;
     }
 
     @Override
-    public int getGroupCount() {
-        return mGroups.size();
+    public int getCount() {
+        return lessons.size();
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
-        return mGroups.get(groupPosition).second.size();
-    }
-
-    @Override
-    public Object getGroup(int groupPosition) {
-        return mGroups.get(groupPosition);
-    }
-
-    @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return mGroups.get(groupPosition).second.get(childPosition);
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                             ViewGroup parent) {
-
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.lesson_view, null);
         }
 
+        Lesson lesson = lessons.get(position);
         TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
-        textGroup.setText(mGroups.get(groupPosition).first.getTitle());
+        textGroup.setText(lesson.getTitle());
 
-        return convertView;
-
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                             View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.section_view, null);
+        ListView listView = (ListView) convertView.findViewById(R.id.section_list);
+        if (listView.getAdapter() == null) {
+            ListAdapter adapter = lessonSectionHelpers.get(lesson.getId()).first;
+            listView.setAdapter(adapter);
+        }
+        if (listView.getOnItemClickListener() == null) {
+            listView.setOnItemClickListener(lessonSectionHelpers.get(lesson.getId()).second);
         }
 
-        TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
-        ISection section = mGroups.get(groupPosition).second.get(childPosition);
-        String name = section.getClass().getSimpleName();
-        int i = mContext.getResources().getIdentifier(name, "string", mContext.getPackageName());
-        String str = mContext.getResources().getString(i);
-        textChild.setText(str);
+
+        if (position == expanded) {
+            listView.setVisibility(View.VISIBLE);
+        } else {
+            listView.setVisibility(View.GONE);
+        }
 
         return convertView;
     }
 
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+
+    public int getExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(int expanded) {
+        if(expanded == this.expanded){
+            this.expanded = -1;
+        }else {
+            this.expanded = expanded;
+        }
     }
 
 
