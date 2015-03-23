@@ -10,18 +10,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Player that wraps standart MediaPlayer
- Can play several tracks (MultiPlayer.Track)/
- Can pause and resume.
-
- --gap--
- It also provides a gap between tracks.
- The gap is retrieved from the  TrackGapProvider.
-
- --resume--
- If paused when the track plays, the resuming will lead to normal resume.
- If paused on the gap between tracks the resuming will play next track without(!) any gap.
-
+ * Player that wraps standard MediaPlayer
+ * Can play several tracks (MultiPlayer.Track)/
+ * Can pause and resume.
+ * <p/>
+ * --gap--
+ * It also provides a gap between tracks.
+ * The gap is retrieved from the  TrackGapProvider.
+ * <p/>
+ * --resume--
+ * If paused when the track plays, the resuming will lead to normal resume.
+ * If paused on the gap between tracks the resuming will play next track without(!) any gap.
  */
 public class MultiPlayer {
 
@@ -67,7 +66,7 @@ public class MultiPlayer {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                playNext();
+                playNext(true);
             }
         });
     }
@@ -101,13 +100,18 @@ public class MultiPlayer {
             isPaused = false;
             refreshQueue();
         }
-        if (isPaused && pos != null) {
-            mp.seekTo(pos);
-            mp.start();
-            resetPause();
+        if (isPaused) {
+            if (pos != null) {
+                mp.seekTo(pos);
+                mp.start();
+                resetPause();
+            } else {
+                resetPause();
+                playNext(false);
+            }
             return;
         }
-        playNext();
+        playNext(true);
     }
 
     private void resetPause() {
@@ -131,7 +135,9 @@ public class MultiPlayer {
     }
 
     synchronized public void pause() {
+        Log.d("pause", "");
         if (mp.isPlaying()) {
+            Log.d("real pause", "");
             mp.pause();
             pos = mp.getCurrentPosition();
         } else {
@@ -140,7 +146,7 @@ public class MultiPlayer {
         isPaused = true;
     }
 
-    synchronized private void playNext() {
+    synchronized private void playNext(boolean withGap) {
         if (next >= forPlay.size()) {
             resetPause();
             if (onFinishedListener != null) {
@@ -150,29 +156,26 @@ public class MultiPlayer {
             return;
         }
         final int nextPos = next;
-
         final Track nextTrack = forPlay.get(nextPos);
 
-        if (isPaused) {
-            resetPause();
-            play(nextTrack, nextPos);
-            return;
-        }
         if (next == 0) {
             play(nextTrack, nextPos);
             return;
         }
         int gap = 0;
-        if (trackGapProvider != null) {
+        if (withGap && trackGapProvider != null) {
             gap = trackGapProvider.getGap(forPlay.get(nextPos - 1), nextTrack);
         }
-        Log.d("gap is", gap+"");
 
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                play(nextTrack, nextPos);
-            }
-        }, gap);
+        if (gap > 0) {
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    play(nextTrack, nextPos);
+                }
+            }, gap);
+        } else {
+            play(nextTrack, nextPos);
+        }
     }
 
     synchronized private void play(Track nextTrack, int listPos) {
@@ -194,6 +197,7 @@ public class MultiPlayer {
             if (onPlayListener != null) {
                 onPlayListener.onPlay(nextTrack);
             }
+            Log.d("plaing", nextTrack.filename);
             mp.start();
         } catch (IOException e) {
             Log.e("media player exception", "in playing " + nextTrack, e);

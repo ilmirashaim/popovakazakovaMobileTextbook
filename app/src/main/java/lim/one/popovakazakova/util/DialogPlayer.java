@@ -1,7 +1,5 @@
 package lim.one.popovakazakova.util;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +21,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
 
     public DialogPlayer(final PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
         multiPlayer = new MultiPlayer(playButton.getContext());
-        multiPlayer.setOnFinishedListener(new MultiPlayer.OnFinishedListener() {
-            @Override
-            public void onFinished() {
-                playButton.onFinished();
-            }
-        });
+        multiPlayer.setOnFinishedListener(playButton);
 
         this.cues = cues;
         this.computerPart = computerPart;
@@ -42,6 +35,7 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
     }
 
     public void setOnPlayListener(final OnPlayListener onPlayListener) {
+        this.onPlayListener = onPlayListener;
         multiPlayer.setOnPlayListener(new MultiPlayer.OnPlayListener() {
             @Override
             public void onPlay(MultiPlayer.Track track) {
@@ -60,7 +54,6 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
 
     @Override
     synchronized public void onPlay() {
-        Log.d("playing", "");
         multiPlayer.play();
     }
 
@@ -117,8 +110,6 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
             return 0;
         }
         int previousPos = previousCue.getPosition();
-        Log.d("previous pos", previousPos + "");
-        Log.d("current pos", currentCue.getPosition() +"");
         for (int i = currentCue.getPosition() - 2; i >= previousPos; i--) {
             gap += cues.get(i).getText().length();
         }

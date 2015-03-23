@@ -6,8 +6,9 @@ import android.view.View;
 import android.widget.Button;
 
 import lim.one.popovakazakova.R;
+import lim.one.popovakazakova.util.MultiPlayer;
 
-public class PlayButton extends Button {
+public class PlayButton extends Button implements MultiPlayer.OnFinishedListener{
     private boolean isPlaying = false;
 
     private static final int[] STATE_PLAYING = {R.attr.state_playing};
@@ -56,6 +57,7 @@ public class PlayButton extends Button {
         return drawableState;
     }
 
+    @Override
     public void onFinished(){
         isPlaying = false;
         setBackgroundResource(R.drawable.ic_av_play_arrow);
