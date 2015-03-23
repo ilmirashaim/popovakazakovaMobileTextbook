@@ -1,11 +1,7 @@
 package lim.one.popovakazakova.util;
 
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
-import android.os.Handler;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,166 +9,121 @@ import java.util.Set;
 import lim.one.popovakazakova.domain.DialogCue;
 import lim.one.popovakazakova.util.view.PlayButton;
 
-public class DialogPlayer implements PlayButton.OnStateChangeListener {
+public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlayer.TrackGapProvider {
 
-    private MediaPlayer mp;
-    private Handler handler = new Handler();
-    private Integer pos;
-    private boolean isPaused = false;
-    private boolean shouldBeRefreshed = true;
-    private PlayButton playButton;
     private List<DialogCue> cues;
-    private List<DialogCue> forPlay;
     private Set<String> computerPart;
-    private boolean isFinished = false;
-    private int next = 0;
+    private MultiPlayer multiPlayer;
 
     private OnPlayListener onPlayListener;
 
-    public interface OnPlayListener{
+    public interface OnPlayListener {
         public void onPlay(DialogCue dialogCue);
     }
 
-    public DialogPlayer(PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
-        this.playButton = playButton;
-        this.cues = cues;
-        mp = new MediaPlayer();
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    public DialogPlayer(final PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
+        multiPlayer = new MultiPlayer(playButton.getContext());
+        multiPlayer.setOnFinishedListener(new MultiPlayer.OnFinishedListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {
-                playNext();
+            public void onFinished() {
+                playButton.onFinished();
             }
         });
+
+        this.cues = cues;
         this.computerPart = computerPart;
+
+        multiPlayer.setForRefresh(getTracks());
+        multiPlayer.setTrackGapProvider(this);
     }
 
     public OnPlayListener getOnPlayListener() {
         return onPlayListener;
     }
 
-    public void setOnPlayListener(OnPlayListener onPlayListener) {
-        this.onPlayListener = onPlayListener;
+    public void setOnPlayListener(final OnPlayListener onPlayListener) {
+        multiPlayer.setOnPlayListener(new MultiPlayer.OnPlayListener() {
+            @Override
+            public void onPlay(MultiPlayer.Track track) {
+                if (track == null) {
+                    onPlayListener.onPlay(null);
+                    return;
+                }
+                DialogCue cue = getCueByTrack(track);
+                if (cue != null) {
+                    onPlayListener.onPlay(cue);
+                }
+
+            }
+        });
     }
 
     @Override
     synchronized public void onPlay() {
-        if (shouldBeRefreshed) {
-            isPaused = false;
-            refreshQueue();
-            shouldBeRefreshed = false;
-        }
-        if (isPaused && pos != null) {
-            mp.seekTo(pos);
-            mp.start();
-            resetPause();
-            return;
-        }
-        playNext();
-    }
-
-    private void resetPause() {
-        isPaused = false;
-        pos = null;
+        Log.d("playing", "");
+        multiPlayer.play();
     }
 
     synchronized public void setComputerPart(Set<String> computerPart) {
         this.computerPart = computerPart;
-        this.shouldBeRefreshed = true;
+        multiPlayer.setForRefresh(getTracks());
     }
 
-    public void refreshQueue() {
-        forPlay = new ArrayList<>();
+    private List<MultiPlayer.Track> getTracks() {
+        List<MultiPlayer.Track> tracks = new ArrayList<>();
+        if (computerPart == null) {
+            return tracks;
+        }
         for (DialogCue cue : cues) {
             if (computerPart.contains(cue.getCharacterName())) {
-                forPlay.add(cue);
+                tracks.add(new MultiPlayer.Track(cue.getId(), cue.getFilename()));
             }
         }
-        next = 0;
-        onPlayListener.onPlay(null);
+        return tracks;
+    }
+
+    private DialogCue getCueByTrack(MultiPlayer.Track track) {
+        if (track == null) {
+            return null;
+        }
+        for (DialogCue cue : cues) {
+            if (cue.getId().equals(track.id)) {
+                return cue;
+            }
+        }
+        return null;
     }
 
     @Override
     synchronized public void onPause() {
-        if (mp.isPlaying()) {
-            mp.pause();
-            pos = mp.getCurrentPosition();
-        } else {
-            pos = null;
-        }
-        isPaused = true;
-    }
-
-    synchronized private void playNext() {
-        if (next >= forPlay.size()) {
-            resetPause();
-            playButton.onFinished();
-            next = 0;
-            return;
-        }
-        final int nextPos = next;
-
-        final DialogCue nextCue = forPlay.get(nextPos);
-
-        if (isPaused) {
-            resetPause();
-            play(nextCue, nextPos);
-            return;
-        }
-        if (next == 0) {
-            play(nextCue, nextPos);
-            return;
-        }
-        int difference = 0;
-        int previous = forPlay.get(next - 1).getPosition();
-        for (int i = nextCue.getPosition() - 2; i >= previous; i--) {
-            difference += cues.get(i).getText().length();
-        }
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                play(nextCue, nextPos);
-            }
-        }, (int)(500 * Math.log(difference)));
-    }
-
-    synchronized private void play(DialogCue nextCue, int listPos) {
-        if (isPaused) {
-            return;
-        }
-        if(isFinished){
-            return;
-        }
-        if(listPos != next){
-            return;
-        }
-        String filename = nextCue.getFilename();
-        try {
-            stopPlaying();
-            mp.reset();
-            AssetFileDescriptor afd = playButton.getContext().getAssets().openFd(filename);
-            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-            mp.prepare();
-            if(onPlayListener != null) {
-                onPlayListener.onPlay(nextCue);
-            }
-            mp.start();
-        } catch (IOException e) {
-            Log.e("media player exception", "in playing " + filename, e);
-        }
-        next++;
+        multiPlayer.pause();
     }
 
     synchronized public void stopPlaying() {
-        if (mp == null) {
-            return;
-        }
-        if (mp.isPlaying()) {
-            mp.stop();
-        }
+        multiPlayer.stopPlaying();
     }
 
-    synchronized public void onFinished(){
-        stopPlaying();
-        isFinished = true;
+    synchronized public void onFinished() {
+        multiPlayer.onFinished();
     }
+
+
+    @Override
+    public int getGap(MultiPlayer.Track previous, MultiPlayer.Track current) {
+        int gap = 0;
+        DialogCue currentCue = getCueByTrack(current);
+        DialogCue previousCue = getCueByTrack(previous);
+        if (currentCue == null || previousCue == null) {
+            return 0;
+        }
+        int previousPos = previousCue.getPosition();
+        Log.d("previous pos", previousPos + "");
+        Log.d("current pos", currentCue.getPosition() +"");
+        for (int i = currentCue.getPosition() - 2; i >= previousPos; i--) {
+            gap += cues.get(i).getText().length();
+        }
+
+        return (gap > 0 ? (int) (500 * Math.log(gap)) : 0);
+    }
+
 }
