@@ -9,11 +9,6 @@
         layout="@layout/app_toolbar"
         android:id="@+id/app_toolbar" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent">
-    </FrameLayout>
 
     <lim.one.popovakazakova.util.view.PlayButton
         android:id="@+id/play_button"
@@ -35,4 +30,12 @@
             android:layout_gravity="center"
             android:duplicateParentState="true"/>
     </lim.one.popovakazakova.util.view.PlayButton>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+
 </LinearLayout>
