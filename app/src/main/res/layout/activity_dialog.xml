@@ -11,19 +11,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
         android:id="@+id/role_button_layout">
-        <lim.one.popovakazakova.util.view.PlayButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/play_button"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/darker_gray"/>
+    <lim.one.popovakazakova.util.view.PlayButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/play_button"/>
 
     <FrameLayout
         android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="false"
+        android:layout_marginTop="8dp"
         android:focusableInTouchMode="false"/>
 
 </LinearLayout>

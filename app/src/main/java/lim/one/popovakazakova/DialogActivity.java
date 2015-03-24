@@ -1,9 +1,16 @@
 package lim.one.popovakazakova;
 
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -85,29 +92,33 @@ public class DialogActivity extends SecondaryActivity implements
         LinearLayout roleButtonLayout = (LinearLayout) findViewById(R.id.role_button_layout);
         int i = 0;
         for (String roleName : roleNames) {
-            ToggleButton button = (ToggleButton)getLayoutInflater().inflate(R.layout.button_role_dialog, null);
+            ViewGroup layout = (ViewGroup)getLayoutInflater().inflate(R.layout.button_role_dialog, null);
+
+            CompoundButton button = (CompoundButton) layout.findViewById(R.id.checkBox);
+            TextView textView = (TextView) layout.findViewById(R.id.textView);
             button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));
-            button.setTextOff(roleName);
-            button.setTextOn(roleName);
-            button.setText(roleName);
-            roleButtonLayout.addView(button);
+            textView.setText(roleName);
+            roleButtonLayout.addView(layout);
             button.setOnCheckedChangeListener(new OnRoleCheckedListener());
             i++;
         }
     }
+
     private class OnRoleCheckedListener implements CompoundButton.OnCheckedChangeListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            TextView textView = (TextView)((ViewGroup)buttonView.getParent()).findViewById(R.id.textView);
             if (isChecked) {
-                computerPart.add(((ToggleButton) buttonView).getTextOn().toString());
+                computerPart.add(textView.getText().toString());
             } else {
-                computerPart.remove(((ToggleButton) buttonView).getTextOff().toString());
+                computerPart.remove(textView.getText().toString());
             }
             ((ArrayAdapter) getListFragment().getListAdapter()).notifyDataSetChanged();
             dialogPlayer.setComputerPart(computerPart);
         }
     }
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         if (dialogPlayer != null) {
             dialogPlayer.onFinished();

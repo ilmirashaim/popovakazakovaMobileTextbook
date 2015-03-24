@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ToggleButton
-    android:layout_height="60pt"
-    android:layout_width="wrap_content"
-    android:checked="true"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+
+<RelativeLayout
+    android:gravity="start|center_vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:checked="true"
+        android:text=""
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="start|center_vertical"
+        android:text=""
+        android:textSize="16sp" />
+</RelativeLayout>
+
