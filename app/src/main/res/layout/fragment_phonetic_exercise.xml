@@ -24,12 +24,21 @@
                 android:gravity="center"
                 android:id="@+id/ex_title" />
 
-            <Button
+            <FrameLayout
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/ic_av_play_arrow"
                 android:id="@+id/play_button"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/play_button_description">
+                <ImageView
+                    android:layout_width="@dimen/fab_icon_size"
+                    android:layout_height="@dimen/fab_icon_size"
+                    android:src="@drawable/ic_av_play_arrow"
+                    android:layout_gravity="center"
+                    android:duplicateParentState="true"
+                    android:id="@+id/play_button_image"
+                    android:contentDescription="@string/play_button_description" />
+                </FrameLayout>
 
         </LinearLayout>
 

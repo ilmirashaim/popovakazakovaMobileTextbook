@@ -3,6 +3,7 @@ package lim.one.popovakazakova;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;

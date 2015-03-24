@@ -114,7 +114,7 @@ public class DialogListFragment extends ListFragment implements DialogPlayer.OnP
             if (playing != null) {
                 selected.setTextColor(getResources().getColor(
                         dialogCue.getPosition().equals(playing.getPosition()) ?
-                                R.color.colorAccent :
+                                R.color.colorPrimary :
                                 R.color.text
                 ));
             }

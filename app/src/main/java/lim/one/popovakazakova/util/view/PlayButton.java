@@ -7,10 +7,7 @@ import android.widget.Button;
 
 import lim.one.popovakazakova.R;
 
-public class PlayButton extends Button{
-    private boolean isPlaying = false;
-
-    private static final int[] STATE_PLAYING = {R.attr.state_playing};
+public class PlayButton extends FloatingActionButton{
 
     public interface OnStateChangeListener {
         public void onPlay();
@@ -31,34 +28,20 @@ public class PlayButton extends Button{
 
     public PlayButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setBackgroundResource(R.drawable.ic_av_play_arrow);
-        this.setOnClickListener(new OnClickListener() {
+        setChecked(false);
+        setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (isPlaying) {
-                    setBackgroundResource(R.drawable.ic_av_play_arrow);
-                    isPlaying = false;
-                    onStateChangeListener.onPause();
-                } else {
-                    setBackgroundResource(R.drawable.ic_av_pause);
-                    isPlaying = true;
+            public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+                if (isChecked) {
                     onStateChangeListener.onPlay();
+                } else {
+                    onStateChangeListener.onPause();
                 }
             }
         });
     }
 
-    @Override
-    protected int[] onCreateDrawableState(int extraSpace) {
-        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (isPlaying) {
-            mergeDrawableStates(drawableState, STATE_PLAYING);
-        }
-        return drawableState;
-    }
-
     public void onFinished(){
-        isPlaying = false;
-        setBackgroundResource(R.drawable.ic_av_play_arrow);
+        setChecked(false);
     }
 }

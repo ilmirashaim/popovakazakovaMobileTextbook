@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -44,7 +47,7 @@ public class PhoneticExerciseFragment extends Fragment {
         final TextView title = (TextView) rootView.findViewById(R.id.ex_title);
         title.setText(getArguments().getString("title"));
 
-        final Button playButton = (Button) rootView.findViewById(R.id.play_button);
+        final FrameLayout playButton = (FrameLayout) rootView.findViewById(R.id.play_button);
         playButton.setOnClickListener(new OnPlayButtonListener(playButton));
 
         return rootView;
@@ -53,12 +56,14 @@ public class PhoneticExerciseFragment extends Fragment {
 
     private class OnPlayButtonListener implements View.OnClickListener {
 
-        private OnPlayButtonListener(final Button playButton) {
+        private OnPlayButtonListener(final FrameLayout playButton) {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mp.reset();
-                    playButton.setBackgroundResource(R.drawable.ic_av_stop);
+                    ((ImageView)playButton.findViewById(R.id.play_button_image)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_av_stop)
+                    );
                 }
             });
         }
@@ -71,14 +76,18 @@ public class PhoneticExerciseFragment extends Fragment {
                 if (mp.isPlaying()) {
                     mp.stop();
                     mp.reset();
-                    ((Button) v).setBackgroundResource(R.drawable.ic_av_play_arrow);
+                    ((ImageView)v.findViewById(R.id.play_button_image)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_av_play_arrow)
+                    );
                 } else {
                     String filename = getArguments().getString("filename");
                     AssetFileDescriptor afd = getActivity().getBaseContext().getAssets().openFd(filename);
                     mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                     mp.prepare();
                     mp.start();
-                    ((Button) v).setBackgroundResource(R.drawable.ic_av_stop);
+                    ((ImageView)v.findViewById(R.id.play_button_image)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_av_stop)
+                    );
                 }
             } catch (Exception e) {
                 Log.e("media player exception", "on click", e);

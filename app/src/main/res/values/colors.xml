@@ -8,4 +8,10 @@
     <!--<color name="colorAccent">#7b2118</color>-->
 
     <color name="text">#000000</color>
+    <color name="button_color">#f3825a</color>
+    <color name="fab_color_1">#8f2e35</color>
+    <color name="fab_color_1_muted">#ad8f2e35</color>
+    <color name="fab_color_2">#f3825a</color>
+    <color name="fab_color_2_muted">#94f3825a</color>
+
 </resources>

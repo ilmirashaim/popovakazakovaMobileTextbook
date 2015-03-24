@@ -8,13 +8,14 @@
         <item name="colorPrimary" >@color/colorPrimary</item>
         <item name="colorPrimaryDark" >@color/colorPrimaryDark</item>
         <item name="colorAccent" >@color/colorAccent</item>
-        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
     </style>
 
-
+    <style name="RaisedButton" parent="android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/raised_button_background</item>
+    </style>
 
     <style name="ButtonBar">
         <item name="android:paddingLeft">2dp</item>
