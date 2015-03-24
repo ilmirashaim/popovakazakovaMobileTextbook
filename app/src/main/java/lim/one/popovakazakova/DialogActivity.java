@@ -22,6 +22,7 @@ import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.util.DialogListFragment;
 import lim.one.popovakazakova.util.DialogPlayer;
 import lim.one.popovakazakova.util.view.PlayButton;
+import lim.one.popovakazakova.util.common.PlayButtonMultiPlayerConnector;
 
 public class DialogActivity extends SecondaryActivity implements
         DialogListFragment.DialogCueManager {
@@ -70,9 +71,9 @@ public class DialogActivity extends SecondaryActivity implements
         computerPart.addAll(parts.keySet());
 
         PlayButton playButton = (PlayButton) findViewById(R.id.play_button);
-        dialogPlayer = new DialogPlayer(playButton, cues, computerPart);
-        playButton.setOnStateChangeListener(dialogPlayer);
+        dialogPlayer = new DialogPlayer(this, cues, computerPart);
         dialogPlayer.setOnPlayListener(listFragment);
+        new PlayButtonMultiPlayerConnector(playButton, dialogPlayer);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.list_container, listFragment).commit();

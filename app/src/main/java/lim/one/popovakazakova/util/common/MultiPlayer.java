@@ -1,4 +1,4 @@
-package lim.one.popovakazakova.util;
+package lim.one.popovakazakova.util.common;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -39,8 +39,8 @@ public class MultiPlayer {
     private OnFinishedListener onFinishedListener;
 
     static final public class Track {
-        Long id;
-        String filename;
+        public Long id;
+        public String filename;
 
         public Track(Long id, String filename) {
             this.id = id;
@@ -130,7 +130,9 @@ public class MultiPlayer {
         forPlay = forRefresh;
 
         next = 0;
-        onPlayListener.onPlay(null);
+        if (onPlayListener != null) {
+            onPlayListener.onPlay(null);
+        }
         forRefresh = null;
     }
 

@@ -1,17 +1,18 @@
 package lim.one.popovakazakova.util;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import lim.one.popovakazakova.domain.DialogCue;
-import lim.one.popovakazakova.util.view.PlayButton;
+import lim.one.popovakazakova.util.common.MultiPlayer;
 
-public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlayer.TrackGapProvider {
+public class DialogPlayer extends MultiPlayer implements MultiPlayer.TrackGapProvider {
 
     private List<DialogCue> cues;
     private Set<String> computerPart;
-    private MultiPlayer multiPlayer;
 
     private OnPlayListener onPlayListener;
 
@@ -19,24 +20,20 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
         public void onPlay(DialogCue dialogCue);
     }
 
-    public DialogPlayer(final PlayButton playButton, List<DialogCue> cues, Set<String> computerPart) {
-        multiPlayer = new MultiPlayer(playButton.getContext());
-        multiPlayer.setOnFinishedListener(playButton);
+    public DialogPlayer(Context context, List<DialogCue> cues, Set<String> computerPart) {
+        super(context);
 
         this.cues = cues;
         this.computerPart = computerPart;
 
-        multiPlayer.setForRefresh(getTracks());
-        multiPlayer.setTrackGapProvider(this);
+        setForRefresh(getTracks());
+        setTrackGapProvider(this);
     }
 
-    public OnPlayListener getOnPlayListener() {
-        return onPlayListener;
-    }
 
     public void setOnPlayListener(final OnPlayListener onPlayListener) {
         this.onPlayListener = onPlayListener;
-        multiPlayer.setOnPlayListener(new MultiPlayer.OnPlayListener() {
+        super.setOnPlayListener(new MultiPlayer.OnPlayListener() {
             @Override
             public void onPlay(MultiPlayer.Track track) {
                 if (track == null) {
@@ -52,14 +49,9 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
         });
     }
 
-    @Override
-    synchronized public void onPlay() {
-        multiPlayer.play();
-    }
-
     synchronized public void setComputerPart(Set<String> computerPart) {
         this.computerPart = computerPart;
-        multiPlayer.setForRefresh(getTracks());
+        setForRefresh(getTracks());
     }
 
     private List<MultiPlayer.Track> getTracks() {
@@ -86,20 +78,6 @@ public class DialogPlayer implements PlayButton.OnStateChangeListener, MultiPlay
         }
         return null;
     }
-
-    @Override
-    synchronized public void onPause() {
-        multiPlayer.pause();
-    }
-
-    synchronized public void stopPlaying() {
-        multiPlayer.stopPlaying();
-    }
-
-    synchronized public void onFinished() {
-        multiPlayer.onFinished();
-    }
-
 
     @Override
     public int getGap(MultiPlayer.Track previous, MultiPlayer.Track current) {
