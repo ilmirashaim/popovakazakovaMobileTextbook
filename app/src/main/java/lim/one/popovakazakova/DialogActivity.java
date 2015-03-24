@@ -85,24 +85,16 @@ public class DialogActivity extends SecondaryActivity implements
         LinearLayout roleButtonLayout = (LinearLayout) findViewById(R.id.role_button_layout);
         int i = 0;
         for (String roleName : roleNames) {
-            ToggleButton button = new ToggleButton(this);
-            button.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, toPixels(60)));
+            ToggleButton button = (ToggleButton)getLayoutInflater().inflate(R.layout.button_role_dialog, null);
+            button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));
             button.setTextOff(roleName);
             button.setTextOn(roleName);
-            button.setId(getResources().getIdentifier("role_button_" + i, "id", getPackageName()));
-            button.setChecked(true);
+            button.setText(roleName);
             roleButtonLayout.addView(button);
             button.setOnCheckedChangeListener(new OnRoleCheckedListener());
             i++;
         }
     }
-
-    private int toPixels(int dps) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dps * scale + 0.5f);
-    }
-
     private class OnRoleCheckedListener implements CompoundButton.OnCheckedChangeListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
