@@ -10,11 +10,8 @@
         <item name="colorAccent" >@color/colorAccent</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
-    </style>
-
-    <style name="RaisedButton" parent="android:style/Widget.Material.Button">
-        <item name="android:background">@drawable/raised_button_background</item>
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ButtonBar">
