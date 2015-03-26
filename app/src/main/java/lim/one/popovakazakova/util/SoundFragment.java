@@ -2,39 +2,46 @@ package lim.one.popovakazakova.util;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import java.util.List;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Sound;
 
-public class SoundFragment extends Fragment {
+public class SoundFragment extends ListFragment {
+    List<Sound> sounds;
 
-    public static SoundFragment newInstance(Sound sound) {
+    public static SoundFragment newInstance(List<Sound> sounds) {
         SoundFragment f = new SoundFragment();
 
-        Bundle args = new Bundle();
-        args.putString("title", sound.getTitle());
-        args.putString("content", sound.getContent());
-        f.setArguments(args);
+        f.setSounds(sounds);
 
         return f;
+    }
+
+    public List<Sound> getSounds() {
+        return sounds;
+    }
+
+    public void setSounds(List<Sound> sounds) {
+        this.sounds = sounds;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_sound, container, false);
-        final TextView content = (TextView) rootView.findViewById(R.id.sound_content);
-        content.setText(getArguments().getString("content"));
+                R.layout.fragment_sound_list, container, false);
 
-        final TextView title = (TextView) rootView.findViewById(R.id.sound_title);
-        title.setText(getArguments().getString("title"));
+        setListAdapter(new SoundAdapter(
+                getActivity(), R.layout.fragment_sound, sounds
+        ));
 
         return rootView;
     }
+
 }
