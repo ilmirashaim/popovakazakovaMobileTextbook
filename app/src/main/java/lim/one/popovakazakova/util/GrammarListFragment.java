@@ -16,24 +16,24 @@ import android.widget.TextView;
 import java.util.List;
 
 import lim.one.popovakazakova.R;
-import lim.one.popovakazakova.domain.Phrase;
+import lim.one.popovakazakova.domain.Grammar;
 import lim.one.popovakazakova.domain.ReadingRule;
 
-public class ReadingRuleListFragment extends ListFragment {
-    private List<ReadingRule> readingRules;
+public class GrammarListFragment extends ListFragment {
+    private List<Grammar> grammars;
 
-    public static ReadingRuleListFragment newInstance(List<ReadingRule> readingRules) {
-        ReadingRuleListFragment f = new ReadingRuleListFragment();
-        f.setReadingRules(readingRules);
+    public static GrammarListFragment newInstance(List<Grammar> grammars) {
+        GrammarListFragment f = new GrammarListFragment();
+        f.setGrammars(grammars);
         return f;
     }
 
-    public List<ReadingRule> getReadingRules() {
-        return readingRules;
+    public List<Grammar> getGrammars() {
+        return grammars;
     }
 
-    public void setReadingRules(List<ReadingRule> readingRules) {
-        this.readingRules = readingRules;
+    public void setGrammars(List<Grammar> grammars) {
+        this.grammars = grammars;
     }
 
     @Override
@@ -45,10 +45,10 @@ public class ReadingRuleListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_reading_rule_list, container, false);
+                R.layout.fragment_grammar_list, container, false);
 
-        setListAdapter(new ReadingRuleAdapter(
-                getActivity(), R.layout.fragment_reading_rule_list_item
+        setListAdapter(new GrammarAdapter(
+                getActivity(), R.layout.fragment_grammar_list_item
         ));
 
         return rootView;
@@ -60,19 +60,19 @@ public class ReadingRuleListFragment extends ListFragment {
         getListView().setOnItemClickListener(null);
     }
 
-    private class ReadingRuleAdapter extends ArrayAdapter<ReadingRule> {
+    private class GrammarAdapter extends ArrayAdapter<Grammar> {
         private Context context;
         private int layoutResourceId;
 
-        public ReadingRuleAdapter(Context context, int layoutResourceId) {
-            super(context, layoutResourceId, getReadingRules());
+        public GrammarAdapter(Context context, int layoutResourceId) {
+            super(context, layoutResourceId, getGrammars());
             this.layoutResourceId = layoutResourceId;
             this.context = context;
         }
 
         @Override
         public int getCount() {
-            return getReadingRules().size();
+            return getGrammars().size();
         }
 
         @Override
@@ -82,11 +82,11 @@ public class ReadingRuleListFragment extends ListFragment {
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView text = (TextView) row.findViewById(R.id.text);
+                TextView text = (TextView) row.findViewById(R.id.title);
 
-                ReadingRule readingRule = getReadingRules().get(position);
+                Grammar grammar = getGrammars().get(position);
 
-                text.setText(Html.fromHtml(readingRule.getTextHtml()));
+                text.setText(Html.fromHtml(grammar.getTextHtml()));
             }
 
             return row;

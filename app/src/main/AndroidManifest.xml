@@ -81,6 +81,17 @@
                 android:value=".MainActivity" />
             >
         </activity>
+        <activity
+            android:name=".GrammarActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme"
+            android:exported="true"
+            android:label="@string/GrammarSection">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+            >
+        </activity>
     </application>
 
 </manifest>
