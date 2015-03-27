@@ -17,11 +17,13 @@ import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
 import lim.one.popovakazakova.domain.Phrase;
+import lim.one.popovakazakova.domain.ReadingRule;
 import lim.one.popovakazakova.domain.helper.DialogHelper;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
 import lim.one.popovakazakova.domain.helper.PhraseHelper;
 import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
+import lim.one.popovakazakova.domain.helper.ReadingRuleHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.domain.helper.SoundUsageHelper;
 import lim.one.popovakazakova.section.DialogSection;
@@ -29,6 +31,7 @@ import lim.one.popovakazakova.section.ISection;
 import lim.one.popovakazakova.section.PhoneticExerciseSection;
 import lim.one.popovakazakova.section.PhraseSection;
 import lim.one.popovakazakova.section.PhraseWordSection;
+import lim.one.popovakazakova.section.ReadingRuleSection;
 import lim.one.popovakazakova.section.SectionHelper;
 import lim.one.popovakazakova.section.SoundSection;
 import lim.one.popovakazakova.util.LessonListAdapter;
@@ -74,6 +77,7 @@ public class MainActivity extends ActionBarActivity {
         PhraseWordHelper phraseWordHelper = new PhraseWordHelper(db);
         DialogHelper dialogHelper = new DialogHelper(db);
         PhraseHelper phraseHelper = new PhraseHelper(db);
+        ReadingRuleHelper readingRuleHelper = new ReadingRuleHelper(db);
         application.registerHelper(lessonHelper);
         application.registerHelper(soundHelper);
         application.registerHelper(soundUsageHelper);
@@ -81,12 +85,14 @@ public class MainActivity extends ActionBarActivity {
         application.registerHelper(phraseWordHelper);
         application.registerHelper(dialogHelper);
         application.registerHelper(phraseHelper);
+        application.registerHelper(readingRuleHelper);
 
         SoundSection soundSection = new SoundSection(soundHelper);
         PhoneticExerciseSection phoneticExerciseSection = new PhoneticExerciseSection(phoneticExerciseHelper);
         PhraseWordSection phraseWordSection = new PhraseWordSection(phraseWordHelper);
         DialogSection dialogSection = new DialogSection(dialogHelper);
         PhraseSection phraseSection = new PhraseSection(phraseHelper);
+        ReadingRuleSection readingRuleSection = new ReadingRuleSection(readingRuleHelper);
 
         SectionHelper sectionHelper = new SectionHelper();
         sectionHelper.registerSection(soundSection, SoundActivity.class);
@@ -94,6 +100,7 @@ public class MainActivity extends ActionBarActivity {
         sectionHelper.registerSection(phraseWordSection, PhraseWordActivity.class);
         sectionHelper.registerSection(dialogSection, DialogActivity.class);
         sectionHelper.registerSection(phraseSection, PhraseActivity.class);
+        sectionHelper.registerSection(readingRuleSection, ReadingRuleActivity.class);
 
         application.setSectionHelper(sectionHelper);
     }

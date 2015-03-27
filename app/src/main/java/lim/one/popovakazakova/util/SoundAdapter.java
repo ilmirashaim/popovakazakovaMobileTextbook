@@ -30,7 +30,7 @@ public class SoundAdapter extends ArrayAdapter<Sound> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
 
-        if (row == null) {
+//        if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             TextView soundContent = (TextView) row.findViewById(R.id.sound_content);
@@ -38,7 +38,7 @@ public class SoundAdapter extends ArrayAdapter<Sound> {
             Sound sound = sounds.get(position);
             soundContent.setText(sound.getContent());
             soundTitle.setText(sound.getTitle());
-        }
+//        }
 
         return row;
     }
