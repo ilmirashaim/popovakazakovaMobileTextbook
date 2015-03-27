@@ -1,17 +1,14 @@
 <resources>
 
-    <color name="colorPrimary">#f3825a</color>
-    <color name="colorPrimaryDark">#da6748</color>
+    <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryDark">#F57C00</color>
 
-    <color name="colorAccent">#ffae2f22</color>
-    <!--<color name="colorAccent">#69160e</color>-->
-    <!--<color name="colorAccent">#7b2118</color>-->
+    <color name="colorAccent">#E65100</color>
 
+    <color name="fab_color_1">#E65100</color>
+    <color name="fab_color_1_muted">#97f3825a</color>
+    <color name="fab_color_2">#E65100</color>
+    <color name="fab_color_2_muted">#97f3825a</color>
     <color name="text">#000000</color>
-    <color name="button_color">#f3825a</color>
-    <color name="fab_color_1">#ffae2f22</color>
-    <color name="fab_color_1_muted">#ad8f2e35</color>
-    <color name="fab_color_2">#ffae2f22</color>
-    <color name="fab_color_2_muted">#ad8f2e35</color>
 
 </resources>
