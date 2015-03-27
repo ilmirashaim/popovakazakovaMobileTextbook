@@ -94,8 +94,10 @@ public class DialogListFragment extends ListFragment implements DialogPlayer.OnP
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
 
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+            if(row == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(layoutResourceId, parent, false);
+            }
             TextView computer = (TextView) row.findViewById(R.id.computer);
             TextView human = (TextView) row.findViewById(R.id.human);
 

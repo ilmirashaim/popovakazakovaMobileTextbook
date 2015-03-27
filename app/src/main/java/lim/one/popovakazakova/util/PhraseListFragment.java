@@ -80,12 +80,10 @@ public class PhraseListFragment extends ListFragment {
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView text = (TextView) row.findViewById(R.id.text);
-
-                Phrase phrase = getPhrases().get(position);
-
-                text.setText(phrase.getText());
             }
+            TextView text = (TextView) row.findViewById(R.id.text);
+            Phrase phrase = getPhrases().get(position);
+            text.setText(phrase.getText());
 
             return row;
         }

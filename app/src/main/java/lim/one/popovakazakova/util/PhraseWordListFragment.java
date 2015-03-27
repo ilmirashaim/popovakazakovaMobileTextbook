@@ -91,19 +91,19 @@ public class PhraseWordListFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
 
-//            if (row == null) {
+            if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView word = (TextView) row.findViewById(R.id.word);
-                TextView partOfSpeech = (TextView) row.findViewById(R.id.part_of_speech);
-                TextView translation = (TextView) row.findViewById(R.id.translation);
+            }
+            TextView word = (TextView) row.findViewById(R.id.word);
+            TextView partOfSpeech = (TextView) row.findViewById(R.id.part_of_speech);
+            TextView translation = (TextView) row.findViewById(R.id.translation);
 
-                PhraseWord phraseWord = getPhraseWords().get(position);
+            PhraseWord phraseWord = getPhraseWords().get(position);
 
-                word.setText(phraseWord.getWord());
-                fillOrHideTextView(partOfSpeech, phraseWord.getPartOfSpeech());
-                fillOrHideTextView(translation, phraseWord.getTranslation());
-//            }
+            word.setText(phraseWord.getWord());
+            fillOrHideTextView(partOfSpeech, phraseWord.getPartOfSpeech());
+            fillOrHideTextView(translation, phraseWord.getTranslation());
 
             return row;
         }

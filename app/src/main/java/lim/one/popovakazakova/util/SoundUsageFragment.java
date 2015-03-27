@@ -76,14 +76,14 @@ public class SoundUsageFragment extends ListFragment {
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView spelling = (TextView) row.findViewById(R.id.spelling);
-                TextView examples = (TextView) row.findViewById(R.id.examples);
-                TextView pos = (TextView) row.findViewById(R.id.position);
-                SoundUsage soundUsage = getSoundUsages().get(position);
-                examples.setText(soundUsage.getExamples());
-                spelling.setText(soundUsage.getSpelling());
-                pos.setText(soundUsage.getPosition());
             }
+            TextView spelling = (TextView) row.findViewById(R.id.spelling);
+            TextView examples = (TextView) row.findViewById(R.id.examples);
+            TextView pos = (TextView) row.findViewById(R.id.position);
+            SoundUsage soundUsage = getSoundUsages().get(position);
+            examples.setText(soundUsage.getExamples());
+            spelling.setText(soundUsage.getSpelling());
+            pos.setText(soundUsage.getPosition());
 
             return row;
         }

@@ -2,6 +2,7 @@ package lim.one.popovakazakova.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,15 +31,15 @@ public class SoundAdapter extends ArrayAdapter<Sound> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
 
-//        if (row == null) {
+        if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
-            TextView soundContent = (TextView) row.findViewById(R.id.sound_content);
-            TextView soundTitle = (TextView) row.findViewById(R.id.sound_title);
-            Sound sound = sounds.get(position);
-            soundContent.setText(sound.getContent());
-            soundTitle.setText(sound.getTitle());
-//        }
+        }
+        TextView soundContent = (TextView) row.findViewById(R.id.sound_content);
+        TextView soundTitle = (TextView) row.findViewById(R.id.sound_title);
+        Sound sound = sounds.get(position);
+        soundContent.setText(sound.getContent());
+        soundTitle.setText(sound.getTitle());
 
         return row;
     }
