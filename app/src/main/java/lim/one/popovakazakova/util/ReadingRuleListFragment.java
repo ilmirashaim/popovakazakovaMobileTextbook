@@ -82,12 +82,13 @@ public class ReadingRuleListFragment extends ListFragment {
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView text = (TextView) row.findViewById(R.id.text);
 
-                ReadingRule readingRule = getReadingRules().get(position);
-
-                text.setText(Html.fromHtml(readingRule.getTextHtml()));
             }
+            TextView text = (TextView) row.findViewById(R.id.text);
+
+            ReadingRule readingRule = getReadingRules().get(position);
+
+            text.setText(Html.fromHtml(readingRule.getTextHtml()));
 
             return row;
         }

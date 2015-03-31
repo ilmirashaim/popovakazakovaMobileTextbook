@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="?android:textAppearanceLarge"
+                style="@style/Title"
                 android:padding="16dp"
                 android:lineSpacingMultiplier="1.2"
                 android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 android:id="@+id/sound_title" />
 
             <TextView
-                style="?android:textAppearanceMedium"
+                style="@style/Body1"
                 android:padding="16dp"
                 android:lineSpacingMultiplier="1.2"
                 android:layout_width="match_parent"

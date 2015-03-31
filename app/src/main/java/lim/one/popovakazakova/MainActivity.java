@@ -1,44 +1,32 @@
 package lim.one.popovakazakova;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Phrase;
-import lim.one.popovakazakova.domain.ReadingRule;
-import lim.one.popovakazakova.domain.helper.DialogHelper;
-import lim.one.popovakazakova.domain.helper.GrammarHelper;
-import lim.one.popovakazakova.domain.helper.LessonHelper;
-import lim.one.popovakazakova.domain.helper.PhoneticExerciseHelper;
-import lim.one.popovakazakova.domain.helper.PhraseHelper;
-import lim.one.popovakazakova.domain.helper.PhraseWordHelper;
-import lim.one.popovakazakova.domain.helper.ReadingRuleHelper;
-import lim.one.popovakazakova.domain.helper.SoundHelper;
-import lim.one.popovakazakova.domain.helper.SoundUsageHelper;
-import lim.one.popovakazakova.section.DialogSection;
-import lim.one.popovakazakova.section.GrammarSection;
-import lim.one.popovakazakova.section.ISection;
-import lim.one.popovakazakova.section.PhoneticExerciseSection;
-import lim.one.popovakazakova.section.PhraseSection;
-import lim.one.popovakazakova.section.PhraseWordSection;
-import lim.one.popovakazakova.section.ReadingRuleSection;
-import lim.one.popovakazakova.section.SectionHelper;
-import lim.one.popovakazakova.section.SoundSection;
-import lim.one.popovakazakova.util.LessonListAdapter;
+import lim.one.popovakazakova.domain.helper.*;
+import lim.one.popovakazakova.section.*;
+import lim.one.popovakazakova.util.LessonFragment;
+import lim.one.popovakazakova.util.SectionFragment;
+import lim.one.popovakazakova.util.view.SlidingTabLayout;
 
 public class MainActivity extends ActionBarActivity {
+    TabPagerAdapter tabPagerAdapter;
+    ViewPager viewPager;
+    private SlidingTabLayout slidingTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +34,11 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+//        setSupportActionBar(toolbar);
 
         configure();
+
 
         EbookApplication application = ((EbookApplication) getApplication());
 
@@ -60,11 +49,13 @@ public class MainActivity extends ActionBarActivity {
             List<ISection> sections = application.getSectionHelper().getAllSections(l);
             groups.add(new Pair<>(l, sections));
         }
-        LessonListAdapter adapter = new LessonListAdapter(getApplicationContext(), groups);
 
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.exListView);
-        listView.setAdapter(adapter);
-        listView.setOnChildClickListener(new OnLessonSectionClickListener(groups));
+        tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), groups);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(tabPagerAdapter);
+
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        slidingTabLayout.setViewPager(viewPager);
 
     }
 
@@ -112,28 +103,6 @@ public class MainActivity extends ActionBarActivity {
         application.setSectionHelper(sectionHelper);
     }
 
-    private class OnLessonSectionClickListener implements ExpandableListView.OnChildClickListener {
-        private List<Pair<Lesson, List<ISection>>> groups;
-
-        private OnLessonSectionClickListener(List<Pair<Lesson, List<ISection>>> groups) {
-            this.groups = groups;
-        }
-
-        @Override
-        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-            Lesson lesson = groups.get(groupPosition).first;
-            ISection section = groups.get(groupPosition).second.get(childPosition);
-            EbookApplication application = ((EbookApplication) getApplication());
-            Class activityClass = application.getSectionHelper().getActivityClass(section);
-            Intent intent = new Intent(getOuter(), activityClass);
-            Bundle b = new Bundle();
-            b.putLong("lesson_id", lesson.getId());
-            intent.putExtras(b);
-            startActivityForResult(intent, 1);
-
-            return false;
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -155,6 +124,34 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class TabPagerAdapter extends FragmentPagerAdapter {
+        List<Pair<Lesson, List<ISection>>> groups;
+
+        public TabPagerAdapter(FragmentManager fm, List<Pair<Lesson, List<ISection>>> groups) {
+            super(fm);
+            this.groups = groups;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return LessonFragment.newInstance(groups);
+            } else {
+                return SectionFragment.newInstance();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getResources().getString(position == 0 ? R.string.tab_lessons : R.string.tab_sections);
         }
     }
 

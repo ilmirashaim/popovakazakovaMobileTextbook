@@ -82,12 +82,14 @@ public class GrammarListFragment extends ListFragment {
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
-                TextView text = (TextView) row.findViewById(R.id.title);
-
-                Grammar grammar = getGrammars().get(position);
-
-                text.setText(Html.fromHtml(grammar.getTextHtml()));
             }
+            TextView text = (TextView) row.findViewById(R.id.text);
+            TextView title = (TextView) row.findViewById(R.id.title);
+
+            Grammar grammar = getGrammars().get(position);
+
+            text.setText(Html.fromHtml(grammar.getTextHtml()));
+            title.setText(grammar.getTitle());
 
             return row;
         }

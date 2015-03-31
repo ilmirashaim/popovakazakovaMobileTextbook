@@ -13,7 +13,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme"
             android:exported="true"
-            android:label="@string/activity_lessons">
+            android:label="@string/activity_main_title">
         </activity>
         <activity
             android:name=".SoundActivity"

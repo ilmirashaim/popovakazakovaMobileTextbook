@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Учебник по французскому</string>
 
-    <string name="activity_lessons">Уроки</string>
+    <string name="activity_main_title">Учебник</string>
+    <string name="tab_lessons">Уроки</string>
+    <string name="tab_sections">Разделы</string>
     <string name="SoundSection">Звуки</string>
     <string name="PhoneticExerciseSection">Фонетические упражнения</string>
     <string name="PhraseWordSection">Слова к фразам</string>

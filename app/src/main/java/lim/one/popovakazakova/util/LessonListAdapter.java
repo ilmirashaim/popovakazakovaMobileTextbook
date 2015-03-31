@@ -65,7 +65,7 @@ public class LessonListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.fragment_lesson_view, null);
+            convertView = inflater.inflate(R.layout.fragment_lesson_list_item, null);
         }
 
         TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
