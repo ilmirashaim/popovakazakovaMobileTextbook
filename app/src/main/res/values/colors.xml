@@ -1,13 +1,13 @@
 <resources>
 
-    <color name="colorPrimary">#FF9800</color>
-    <color name="colorPrimaryDark">#F57C00</color>
+    <color name="colorPrimary">#BF360C</color>
+    <color name="colorPrimaryDark">#ff992908</color>
 
-    <color name="colorAccent">#E65100</color>
+    <color name="colorAccent">#FF6F00</color>
 
-    <color name="fab_color_1">#E65100</color>
+    <color name="fab_color_1">@color/colorAccent</color>
     <color name="fab_color_1_muted">#97f3825a</color>
-    <color name="fab_color_2">#E65100</color>
+    <color name="fab_color_2">@color/colorAccent</color>
     <color name="fab_color_2_muted">#97f3825a</color>
 
     <color name="text">#000000</color>
@@ -19,10 +19,6 @@
 
     <!--<color name="colorAccent">#FFA000</color>-->
 
-    <!--<color name="fab_color_1">@color/colorAccent</color>-->
-    <!--<color name="fab_color_1_muted">#97f3825a</color>-->
-    <!--<color name="fab_color_2">@color/colorAccent</color>-->
-    <!--<color name="fab_color_2_muted">#97f3825a</color>-->
 
 
 </resources>

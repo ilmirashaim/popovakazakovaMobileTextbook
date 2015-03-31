@@ -19,7 +19,7 @@
         android:theme="@style/ToolbarTheme"
         app:pstsShouldExpand="true"
         app:pstsTextAlpha="100"
-        app:pstsIndicatorHeight="2dp"
+        app:pstsIndicatorHeight="3dp"
         app:pstsIndicatorColor="@color/colorAccent"/>
 
     <android.support.v4.view.ViewPager

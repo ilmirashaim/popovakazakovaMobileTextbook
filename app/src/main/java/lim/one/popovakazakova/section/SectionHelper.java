@@ -24,6 +24,15 @@ public class SectionHelper {
         }
         return sections;
     }
+
+    public List<ISection> getAllSections() {
+        List<ISection> sections = new ArrayList<>();
+        for (ISection section : sectionActivityMap.keySet()) {
+           //todo: check if there are elements in each section
+            sections.add(section);
+        }
+        return sections;
+    }
     public Class getActivityClass(ISection section){
         return sectionActivityMap.get(section);
     }
