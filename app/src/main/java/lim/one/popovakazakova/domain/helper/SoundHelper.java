@@ -11,7 +11,7 @@ import lim.one.popovakazakova.domain.Sound;
 
 public class SoundHelper {
     SQLiteDatabase db;
-    private String[] allColumns = {"_id", "lesson_id", "title", "content"};
+    private String[] allColumns = {"_id", "lesson_id", "title", "content", "type"};
     private static final String tableName = "sound";
 
     public SoundHelper(SQLiteDatabase db) {
@@ -64,6 +64,7 @@ public class SoundHelper {
         sound.setLessonId(cursor.getLong(1));
         sound.setTitle(cursor.getString(2));
         sound.setContent(cursor.getString(3));
+        sound.setType(cursor.getString(4));
 
         return sound;
     }

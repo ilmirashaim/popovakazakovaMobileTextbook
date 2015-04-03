@@ -4,6 +4,7 @@ public class Sound extends LessonElement {
     private String content;
     private String title;
     private String filename;
+    private String type;
 
     public String getFilename() {
         return filename;
@@ -27,5 +28,13 @@ public class Sound extends LessonElement {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

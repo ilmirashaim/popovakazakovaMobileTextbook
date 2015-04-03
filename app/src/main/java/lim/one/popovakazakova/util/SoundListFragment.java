@@ -1,6 +1,6 @@
 package lim.one.popovakazakova.util;
 
-
+import android.graphics.PorterDuff;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,10 +11,10 @@ import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Sound;
 import lim.one.popovakazakova.util.common.SimpleListFragment;
 
-public class SoundFragment extends SimpleListFragment<Sound> {
+public class SoundListFragment extends SimpleListFragment<Sound> {
 
-    public static SoundFragment newInstance(List<Sound> sounds) {
-        SoundFragment f = new SoundFragment();
+    public static SoundListFragment newInstance(List<Sound> sounds) {
+        SoundListFragment f = new SoundListFragment();
         f.setElements(sounds);
         f.setListViewId(R.layout.fragment_sound_list);
         f.setListElementViewId(R.layout.fragment_sound);
@@ -29,6 +29,9 @@ public class SoundFragment extends SimpleListFragment<Sound> {
         Sound sound = getElements().get(position);
         soundContent.setText(sound.getContent());
         soundTitle.setText(sound.getTitle());
+        soundTitle.getBackground().setColorFilter(getResources().getColor(
+                getResources().getIdentifier(sound.getType(), "color", getActivity().getPackageName())
+        ), PorterDuff.Mode.SRC);
     }
 
 }

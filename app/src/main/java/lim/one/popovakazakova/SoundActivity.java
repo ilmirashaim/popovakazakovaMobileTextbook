@@ -9,7 +9,7 @@ import lim.one.popovakazakova.domain.Lesson;
 import lim.one.popovakazakova.domain.Sound;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
-import lim.one.popovakazakova.util.SoundFragment;
+import lim.one.popovakazakova.util.SoundListFragment;
 import lim.one.popovakazakova.util.SoundTitlesListFragment;
 
 public class SoundActivity extends SecondaryActivity {
@@ -32,7 +32,7 @@ public class SoundActivity extends SecondaryActivity {
             Long lessonId = b.getLong("lesson_id");
             Lesson lesson = lessonHelper.getById(lessonId);
             soundsList = soundHelper.getAllSounds(lesson);
-            f = SoundFragment.newInstance(soundsList);
+            f = SoundListFragment.newInstance(soundsList);
         } else {
             soundsList = soundHelper.getAllSounds();
             f = SoundTitlesListFragment.newInstance(soundsList);
