@@ -1,11 +1,16 @@
 package lim.one.popovakazakova;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
+import lim.one.popovakazakova.domain.Sound;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.SoundHelper;
 import lim.one.popovakazakova.util.SoundFragment;
+import lim.one.popovakazakova.util.SoundTitlesListFragment;
 
 public class SoundActivity extends SecondaryActivity {
 
@@ -20,12 +25,22 @@ public class SoundActivity extends SecondaryActivity {
         SoundHelper soundHelper = application.getHelper(SoundHelper.class);
 
         Bundle b = getIntent().getExtras();
-        Long lessonId = b.getLong("lesson_id");
-        Lesson lesson = lessonHelper.getById(lessonId);
+        Boolean hasLesson = !b.getBoolean("has_no_lesson", false);
+        List<Sound> soundsList;
+        Fragment f;
+        if (hasLesson) {
+            Long lessonId = b.getLong("lesson_id");
+            Lesson lesson = lessonHelper.getById(lessonId);
+            soundsList = soundHelper.getAllSounds(lesson);
+            f = SoundFragment.newInstance(soundsList);
+        } else {
+            soundsList = soundHelper.getAllSounds();
+            f = SoundTitlesListFragment.newInstance(soundsList);
+        }
 
-        SoundFragment listFragment = SoundFragment.newInstance(soundHelper.getAllSounds(lesson));
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.list_container, listFragment).commit();
+                .add(R.id.list_container, f).commit();
 
     }
 

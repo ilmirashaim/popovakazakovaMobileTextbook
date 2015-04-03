@@ -17,6 +17,9 @@
     <style name="Title" parent="Base.TextAppearance.AppCompat.Title">
 
     </style>
+    <style name="Subhead" parent="Base.TextAppearance.AppCompat.Subhead">
+
+    </style>
     <style name="Body1" parent="Base.TextAppearance.AppCompat.Body1">
 
     </style>

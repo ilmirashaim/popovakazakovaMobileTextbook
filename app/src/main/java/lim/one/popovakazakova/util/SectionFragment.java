@@ -3,6 +3,7 @@ package lim.one.popovakazakova.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class SectionFragment extends ListFragment {
     }
 
     List<ISection> sections;
+
     public static SectionFragment newInstance() {
         SectionFragment f = new SectionFragment();
         return f;
@@ -90,6 +92,14 @@ public class SectionFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        ISection section = getSections().get(position);
+        EbookApplication application = ((EbookApplication) getActivity().getApplication());
+        Class activityClass = application.getSectionHelper().getActivityClass(section);
+        Intent intent = new Intent(getActivity(), activityClass);
+        Bundle b = new Bundle();
+        b.putBoolean("has_no_lesson", true);
+        intent.putExtras(b);
+        startActivityForResult(intent, 1);
     }
 
 }

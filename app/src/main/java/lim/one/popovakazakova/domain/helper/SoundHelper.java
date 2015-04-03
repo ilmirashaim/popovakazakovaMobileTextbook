@@ -19,11 +19,15 @@ public class SoundHelper {
     }
 
     public List<Sound> getAllSounds(Lesson lesson) {
-        List<Sound> sounds = new ArrayList<Sound>();
-
         Cursor cursor = db.query(tableName, allColumns,
                 "lesson_id=?",
                 new String[]{lesson.getId().toString()}, null, null, null, null);
+        List<Sound> sounds = soundListFromCursor(cursor);
+        return sounds;
+    }
+
+    private List<Sound> soundListFromCursor(Cursor cursor) {
+        List<Sound> sounds = new ArrayList<Sound>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Sound sound = cursorToSound(cursor);
@@ -31,6 +35,15 @@ public class SoundHelper {
             cursor.moveToNext();
         }
         cursor.close();
+        return sounds;
+    }
+
+    public List<Sound> getAllSounds() {
+
+
+        Cursor cursor = db.query(tableName, allColumns,
+                null, null, null, null, null, null);
+        List<Sound> sounds = soundListFromCursor(cursor);
         return sounds;
     }
 

@@ -10,7 +10,7 @@
     <TextView
         style="?android:textAppearanceLarge"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/list_height"
         android:textSize="16sp"
         android:gravity="start|center_vertical"
         android:layout_marginLeft="16dp"
