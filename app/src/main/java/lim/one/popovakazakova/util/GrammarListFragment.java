@@ -1,15 +1,10 @@
 package lim.one.popovakazakova.util;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ListFragment;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,83 +12,32 @@ import java.util.List;
 
 import lim.one.popovakazakova.R;
 import lim.one.popovakazakova.domain.Grammar;
-import lim.one.popovakazakova.domain.ReadingRule;
+import lim.one.popovakazakova.util.common.SimpleListFragment;
 
-public class GrammarListFragment extends ListFragment {
-    private List<Grammar> grammars;
-
+public class GrammarListFragment extends SimpleListFragment<Grammar> {
     public static GrammarListFragment newInstance(List<Grammar> grammars) {
         GrammarListFragment f = new GrammarListFragment();
-        f.setGrammars(grammars);
+        f.setElements(grammars);
+        f.setListViewId(R.layout.fragment_grammar_list);
+        f.setListElementViewId(R.layout.fragment_grammar_list_item);
         return f;
     }
 
-    public List<Grammar> getGrammars() {
-        return grammars;
-    }
-
-    public void setGrammars(List<Grammar> grammars) {
-        this.grammars = grammars;
-    }
-
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
+    public void fillRow(int position, View row, ViewGroup parent) {
+        TextView text = (TextView) row.findViewById(R.id.text);
+        TextView title = (TextView) row.findViewById(R.id.title);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_grammar_list, container, false);
+        Grammar grammar = getElements().get(position);
 
-        setListAdapter(new GrammarAdapter(
-                getActivity(), R.layout.fragment_grammar_list_item
-        ));
-
-        return rootView;
+        text.setText(Html.fromHtml(grammar.getTextHtml()));
+        title.setText(grammar.getTitle());
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().setOnItemClickListener(null);
-    }
-
-    private class GrammarAdapter extends ArrayAdapter<Grammar> {
-        private Context context;
-        private int layoutResourceId;
-
-        public GrammarAdapter(Context context, int layoutResourceId) {
-            super(context, layoutResourceId, getGrammars());
-            this.layoutResourceId = layoutResourceId;
-            this.context = context;
-        }
-
-        @Override
-        public int getCount() {
-            return getGrammars().size();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-
-            if (row == null) {
-                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                row = inflater.inflate(layoutResourceId, parent, false);
-            }
-            TextView text = (TextView) row.findViewById(R.id.text);
-            TextView title = (TextView) row.findViewById(R.id.title);
-
-            Grammar grammar = getGrammars().get(position);
-
-            text.setText(Html.fromHtml(grammar.getTextHtml()));
-            title.setText(grammar.getTitle());
-
-            return row;
-        }
-
     }
 
     @Override

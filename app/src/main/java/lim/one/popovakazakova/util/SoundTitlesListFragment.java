@@ -1,11 +1,9 @@
 package lim.one.popovakazakova.util;
 
 
-import android.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,10 +40,10 @@ public class SoundTitlesListFragment extends SimpleListFragment<Sound> {
         TextView soundContent = (TextView) v.findViewById(R.id.sound_content);
         CardView cardView = (CardView) v.findViewById(R.id.card_view);
         int soundContentVisibility = soundContent.getVisibility();
-        if(soundContentVisibility== View.VISIBLE){
+        if (soundContentVisibility == View.VISIBLE) {
             soundContent.setVisibility(View.GONE);
             cardView.setCardElevation(0);
-        }else{
+        } else {
             visible = position;
             soundContent.setVisibility(View.VISIBLE);
             cardView.setCardElevation(getResources().getDimension(R.dimen.card_elevation));

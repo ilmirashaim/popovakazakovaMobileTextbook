@@ -17,6 +17,7 @@ abstract public class SimpleListFragment<T> extends ListFragment {
     private int listViewId;
     private int listElementViewId;
 
+
     public void setListElementViewId(int listElementViewId) {
         this.listElementViewId = listElementViewId;
     }
