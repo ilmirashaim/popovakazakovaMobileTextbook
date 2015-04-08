@@ -1,6 +1,8 @@
 package lim.one.popovakazakova.util;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import java.util.List;
 
@@ -23,13 +25,5 @@ public class SoundInfo {
         return 1 + phoneticExercises.size();
     }
 
-    public Fragment getFragment(int position) {
-        Fragment f;
-        if(position == 0){
-            f = SoundUsageFragment.newInstance(sound, soundUsages);
-        }else{
-            f = PhoneticExerciseFragment.newInstance(phoneticExercises.get(position - 1));
-        }
-        return f;
-    }
+
 }

@@ -48,19 +48,28 @@ public class SoundUsageFragment extends ListFragment {
         title.setText(getArguments().getString("sound"));
 
         setListAdapter(new SoundUsageAdapter(
-                getActivity(), R.layout.fragment_sound_usage_item
+                getActivity(), R.layout.fragment_sound_usage_item, soundUsages
         ));
 
         return rootView;
     }
 
-    private class SoundUsageAdapter extends ArrayAdapter<SoundUsage> {
+    public static class SoundUsageAdapter extends ArrayAdapter<SoundUsage> {
+        private List<SoundUsage> soundUsages;
+        public List<SoundUsage> getSoundUsages() {
+            return soundUsages;
+        }
+
+        public void setSoundUsages(List<SoundUsage> soundUsages) {
+            this.soundUsages = soundUsages;
+        }
 
         Context context;
         int layoutResourceId;
 
-        public SoundUsageAdapter(Context context, int layoutResourceId) {
-            super(context, layoutResourceId, getSoundUsages());
+        public SoundUsageAdapter(Context context, int layoutResourceId, List<SoundUsage> soundUsages) {
+            super(context, layoutResourceId, soundUsages);
+            this.soundUsages = soundUsages;
             this.layoutResourceId = layoutResourceId;
             this.context = context;
         }
@@ -77,12 +86,12 @@ public class SoundUsageFragment extends ListFragment {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(layoutResourceId, parent, false);
             }
-            TextView spelling = (TextView) row.findViewById(R.id.spelling);
-            TextView examples = (TextView) row.findViewById(R.id.examples);
+//            TextView spelling = (TextView) row.findViewById(R.id.spelling);
+//            TextView examples = (TextView) row.findViewById(R.id.examples);
             TextView pos = (TextView) row.findViewById(R.id.position);
             SoundUsage soundUsage = getSoundUsages().get(position);
-            examples.setText(soundUsage.getExamples());
-            spelling.setText(soundUsage.getSpelling());
+//            examples.setText(soundUsage.getExamples());
+//            spelling.setText(soundUsage.getSpelling());
             pos.setText(soundUsage.getPosition());
 
             return row;
