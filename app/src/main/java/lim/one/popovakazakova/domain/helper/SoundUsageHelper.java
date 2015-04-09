@@ -12,7 +12,7 @@ import lim.one.popovakazakova.domain.SoundUsage;
 public class SoundUsageHelper {
     SQLiteDatabase db;
     private static final String[] allColumns = new String[]{
-            "_id", "sound_id", "spelling", "examples", "position"
+            "_id", "sound_id", "spelling", "examples", "position", "sound_title"
     };
     private static final String tableName = "sound_usage";
 
@@ -43,6 +43,7 @@ public class SoundUsageHelper {
         soundUsage.setSpelling(cursor.getString(2));
         soundUsage.setExamples(cursor.getString(3));
         soundUsage.setPosition(cursor.getString(4));
+        soundUsage.setSoundTitle(cursor.getString(5));
 
         return soundUsage;
     }

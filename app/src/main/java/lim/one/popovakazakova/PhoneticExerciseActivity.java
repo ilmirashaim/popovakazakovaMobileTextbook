@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
@@ -53,32 +55,66 @@ public class PhoneticExerciseActivity extends SecondaryActivity {
                         R.layout.activity_phonetic_exercise_item, container, true
                 );
                 ViewGroup soundView = (ViewGroup) container.findViewById(R.id.group_container);
-                ViewGroup soundUsageContainer = (ViewGroup) soundView.findViewById(
-                        R.id.sound_usage_container
-                );
-                final TextView title = (TextView) soundView.findViewById(R.id.sound_title);
-                title.setText("Звук [" + sound.getTitle() + "]");
+                ViewGroup soundUsageList = (ViewGroup) soundView.findViewById(R.id.sound_usage_list);
 
                 int soundUsageId = 0;
-                for (SoundUsage soundUsage : soundUsages) {
-                    addSoundUsage(soundUsage, soundUsageContainer, soundId + "_" + soundUsageId);
-                    Log.e("sound", soundId + "_" + soundUsageId);
-                    soundUsageId++;
+
+                if (soundUsages.size() > 0) {
+                    LinkedHashMap<String, List<SoundUsage>> groupedByTitle = groupSoundUsages(soundUsages);
+                    for (String t : groupedByTitle.keySet()) {
+                        Log.e("sound", t);
+                        getLayoutInflater().inflate(
+                                R.layout.fragment_sound_usage, soundUsageList, true
+                        );
+                        ViewGroup soundUsageView = (ViewGroup) soundUsageList.findViewById(R.id.sound_usage);
+
+                        ViewGroup soundUsageContainer = (ViewGroup) soundUsageView.findViewById(
+                                R.id.sound_usage_container
+                        );
+                        final TextView title = (TextView) soundUsageView.findViewById(R.id.sound_title);
+                        title.setText("Звук [" + t + "]");
+
+                        for (SoundUsage soundUsage : groupedByTitle.get(t)) {
+                            addSoundUsage(soundUsage, soundUsageContainer, soundId + "_" + soundUsageId);
+                            Log.e("sound", soundId + "_" + soundUsageId);
+                            soundUsageId++;
+                        }
+                        soundUsageView.setId(
+                                getResources().getIdentifier(
+                                        "sound_usage_" + t,
+                                        "id", getPackageName()
+                                ));
+
+                    }
                 }
 
                 GridView gridview = (GridView) soundView.findViewById(R.id.gridview);
                 gridview.setAdapter(new PhoneticExerciseAdapter(this, exercises));
                 ((ExpandableHeightGridView) gridview).setExpanded(true);
+
                 soundView.setId(
                         getResources().getIdentifier(
                                 "group_container_" + soundId,
                                 "id", getPackageName()
                         ));
+
                 soundId++;
             }
         }
 
 
+    }
+
+    private LinkedHashMap<String, List<SoundUsage>> groupSoundUsages(List<SoundUsage> soundUsages) {
+        LinkedHashMap<String, List<SoundUsage>> groupedByTitle = new LinkedHashMap<>();
+        for (SoundUsage s : soundUsages) {
+            String soundTitle = s.getSoundTitle();
+            if (groupedByTitle.get(soundTitle) == null) {
+                groupedByTitle.put(soundTitle, new ArrayList<SoundUsage>());
+            }
+            groupedByTitle.get(soundTitle).add(s);
+        }
+        return groupedByTitle;
     }
 
     private void addSoundUsage(SoundUsage soundUsage, ViewGroup container, String id) {
@@ -96,6 +132,7 @@ public class PhoneticExerciseActivity extends SecondaryActivity {
                         "id", getPackageName()
                 ));
     }
+
     private void fillOrHideTextView(TextView view, String text) {
         if (text == null || text.isEmpty()) {
             view.setVisibility(View.GONE);

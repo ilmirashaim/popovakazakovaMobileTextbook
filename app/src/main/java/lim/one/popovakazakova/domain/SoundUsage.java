@@ -3,6 +3,7 @@ package lim.one.popovakazakova.domain;
 public class SoundUsage {
     private Long id;
     private Long soundId;
+    private String soundTitle;
     private String examples;
     private String position;
     private String spelling;
@@ -21,6 +22,14 @@ public class SoundUsage {
 
     public void setSoundId(Long soundId) {
         this.soundId = soundId;
+    }
+
+    public String getSoundTitle() {
+        return soundTitle;
+    }
+
+    public void setSoundTitle(String soundTitle) {
+        this.soundTitle = soundTitle;
     }
 
     public String getExamples() {
