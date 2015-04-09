@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:id="@+id/sound_usage_element">
 
     <TextView
-        style="?android:textAppearanceLarge"
+        style="@style/Subhead"
+        android:textStyle="italic"
         android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:id="@+id/position"
         xmlns:android="http://schemas.android.com/apk/res/android" />
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:layout_below="@+id/position"
+        android:layout_marginBottom="4dp"
+        android:layout_height="48dp">
 
         <TextView
             style="@style/Subhead"
@@ -34,5 +38,5 @@
             android:layout_height="wrap_content"
             android:paddingLeft="72dp"
             android:id="@+id/examples" />
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
