@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/phonetic_exercise"
+    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="2dp">
 
-    <TextView
-        style="@style/Title"
-        android:paddingLeft="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical|start"
-        android:id="@+id/sound_title" />
-
-
-    <LinearLayout
-        android:padding="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/sound_usage_container"
-        android:layout_below="@+id/sound_title"/>
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-</RelativeLayout>
+        <TextView
+            style="@style/Title"
+            android:paddingLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|start"
+            android:id="@+id/sound_title" />
+
+
+        <LinearLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/sound_usage_container"
+            android:layout_below="@+id/sound_title" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
 

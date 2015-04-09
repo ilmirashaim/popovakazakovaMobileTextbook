@@ -21,14 +21,15 @@
         android:orientation="horizontal">
 
         <TextView
-            style="?android:textAppearanceLarge"
+            style="@style/Subhead"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:id="@+id/spelling" />
 
         <TextView
-            style="?android:textAppearanceMedium"
+            style="@style/Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="72dp"

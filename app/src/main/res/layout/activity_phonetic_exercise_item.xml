@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/group_container">
 
     <include
@@ -10,12 +11,14 @@
     <lim.one.popovakazakova.util.view.ExpandableHeightGridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:numColumns="auto_fit"
         android:verticalSpacing="2dp"
         android:horizontalSpacing="2dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:layout_below="@+id/sound_usage" />
 
 
