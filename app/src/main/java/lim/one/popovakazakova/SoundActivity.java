@@ -3,6 +3,8 @@ package lim.one.popovakazakova;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
@@ -35,6 +37,12 @@ public class SoundActivity extends SecondaryActivity {
             f = SoundListFragment.newInstance(soundsList);
         } else {
             soundsList = soundHelper.getAllSounds();
+            Collections.sort(soundsList, new Comparator<Sound>() {
+                @Override
+                public int compare(Sound lhs, Sound rhs) {
+                    return lhs.getTitle().charAt(0) - rhs.getTitle().charAt(0);
+                }
+            });
             f = SoundTitlesListFragment.newInstance(soundsList);
         }
 
