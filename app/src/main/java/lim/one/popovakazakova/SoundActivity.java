@@ -40,7 +40,7 @@ public class SoundActivity extends SecondaryActivity {
             Collections.sort(soundsList, new Comparator<Sound>() {
                 @Override
                 public int compare(Sound lhs, Sound rhs) {
-                    return lhs.getTitle().charAt(0) - rhs.getTitle().charAt(0);
+                    return lhs.getTitle().compareTo(rhs.getTitle());
                 }
             });
             f = SoundTitlesListFragment.newInstance(soundsList);

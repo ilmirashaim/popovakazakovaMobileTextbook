@@ -1,26 +1,19 @@
 package lim.one.popovakazakova;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
-import lim.one.popovakazakova.domain.Phrase;
 import lim.one.popovakazakova.domain.ReadingRule;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
-import lim.one.popovakazakova.domain.helper.PhraseHelper;
 import lim.one.popovakazakova.domain.helper.ReadingRuleHelper;
-import lim.one.popovakazakova.util.PhraseListFragment;
 import lim.one.popovakazakova.util.ReadingRuleListFragment;
-import lim.one.popovakazakova.util.common.MultiPlayer;
-import lim.one.popovakazakova.util.common.PlayButtonMultiPlayerConnector;
-import lim.one.popovakazakova.util.view.PlayButton;
 
 public class ReadingRuleActivity extends SecondaryActivity {
-
-    private List<ReadingRule> readingRules;
-    private ReadingRuleListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +32,32 @@ public class ReadingRuleActivity extends SecondaryActivity {
         ReadingRuleHelper readingRuleHelper = application.getHelper(ReadingRuleHelper.class);
 
         Bundle b = getIntent().getExtras();
-        Long lessonId = b.getLong("lesson_id");
-        Lesson lesson = lessonHelper.getById(lessonId);
 
-        List<ReadingRule> readingRules = readingRuleHelper.getReadingRules(lesson);
-        this.readingRules = readingRules;
 
-        listFragment = createListFragment();
+        List<ReadingRule> readingRules;
+
+        Fragment fragment;
+
+        Boolean hasLesson = !b.getBoolean("has_no_lesson", false);
+        if (hasLesson) {
+            Long lessonId = b.getLong("lesson_id");
+            Lesson lesson = lessonHelper.getById(lessonId);
+            readingRules = readingRuleHelper.getReadingRules(lesson);
+            fragment = ReadingRuleListFragment.newInstance(readingRules);
+
+        } else {
+            readingRules = readingRuleHelper.getAllReadingRules();
+            Collections.sort(readingRules, new Comparator<ReadingRule>() {
+                @Override
+                public int compare(ReadingRule lhs, ReadingRule rhs) {
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            });
+            fragment = ReadingRuleListFragment.newInstance(readingRules);
+        }
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, listFragment).commit();
+                .add(R.id.fragment_container, fragment).commit();
     }
 
 
@@ -55,11 +65,6 @@ public class ReadingRuleActivity extends SecondaryActivity {
     public void onBackPressed() {
         setResult(1);
         finish();
-    }
-
-
-    private ReadingRuleListFragment createListFragment() {
-        return ReadingRuleListFragment.newInstance(readingRules);
     }
 
 }
