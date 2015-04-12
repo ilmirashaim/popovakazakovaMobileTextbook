@@ -17,7 +17,7 @@ public class SoundListFragment extends SimpleListFragment<Sound> {
         SoundListFragment f = new SoundListFragment();
         f.setElements(sounds);
         f.setListViewId(R.layout.fragment_sound_list);
-        f.setListElementViewId(R.layout.fragment_sound);
+        f.setListElementViewId(R.layout.fragment_sound_list_item);
         return f;
     }
 

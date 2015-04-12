@@ -12,6 +12,7 @@ import lim.one.popovakazakova.domain.ReadingRule;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.ReadingRuleHelper;
 import lim.one.popovakazakova.util.ReadingRuleListFragment;
+import lim.one.popovakazakova.util.ReadingRuleTitlesListFragment;
 
 public class ReadingRuleActivity extends SecondaryActivity {
 
@@ -53,7 +54,7 @@ public class ReadingRuleActivity extends SecondaryActivity {
                     return lhs.getTitle().compareTo(rhs.getTitle());
                 }
             });
-            fragment = ReadingRuleListFragment.newInstance(readingRules);
+            fragment = ReadingRuleTitlesListFragment.newInstance(readingRules);
         }
 
         getSupportFragmentManager().beginTransaction()

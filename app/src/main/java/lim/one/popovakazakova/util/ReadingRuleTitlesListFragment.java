@@ -1,7 +1,10 @@
 package lim.one.popovakazakova.util;
 
 import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.SingleLineTransformationMethod;
 import android.view.View;
@@ -10,34 +13,49 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import lim.one.popovakazakova.R;
-import lim.one.popovakazakova.domain.Sound;
+import lim.one.popovakazakova.domain.ReadingRule;
 import lim.one.popovakazakova.util.common.SimpleListFragment;
 
-public class SoundTitlesListFragment extends SimpleListFragment<Sound> {
+public class ReadingRuleTitlesListFragment extends SimpleListFragment<ReadingRule> {
+    private String[] colors = new String[]{"red", "pink", "purple", "indigo", "green", "teal"};
     int visible = -1;
 
-    public static SoundTitlesListFragment newInstance(List<Sound> sounds) {
-        SoundTitlesListFragment f = new SoundTitlesListFragment();
-        f.setElements(sounds);
-        f.setListViewId(R.layout.fragment_sound_list);
-        f.setListElementViewId(R.layout.fragment_sound_titles_list_item);
+    public void shuffle() {
+        Arrays.sort(colors);
+    }
+
+    public static ReadingRuleTitlesListFragment newInstance(List<ReadingRule> readingRules) {
+        ReadingRuleTitlesListFragment f = new ReadingRuleTitlesListFragment();
+        f.setElements(readingRules);
+        f.setListViewId(R.layout.fragment_reading_rule_list);
+        f.setListElementViewId(R.layout.fragment_reading_rule_titles_list_item);
+        f.shuffle();
         return f;
     }
 
 
     @Override
     public void fillRow(int position, View row, ViewGroup parent) {
-        TextView soundContent = (TextView) row.findViewById(R.id.sound_content);
-        TextView soundTitle = (TextView) row.findViewById(R.id.sound_title);
-        Sound sound = getElements().get(position);
-        soundContent.setText(sound.getContent());
-        soundTitle.setText(sound.getTitle());
-        soundTitle.getBackground().setColorFilter(getResources().getColor(
-                getResources().getIdentifier(sound.getType(), "color", getActivity().getPackageName())
+        TextView text = (TextView) row.findViewById(R.id.text);
+        ReadingRule readingRule = getElements().get(position);
+        text.setText(Html.fromHtml(readingRule.getTextHtml()));
+
+        TextView ruleTitle = (TextView) row.findViewById(R.id.rule_title);
+        ruleTitle.setText(readingRule.getTitle());
+        ruleTitle.getBackground().setColorFilter(getResources().getColor(
+                getResources().getIdentifier(
+                        colors[position % colors.length], "color", getActivity().getPackageName()
+                )
         ), PorterDuff.Mode.SRC);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -59,19 +77,16 @@ public class SoundTitlesListFragment extends SimpleListFragment<Sound> {
 
     public void setItemSelected(int position, boolean selected){
         View v = getViewByPosition(position, getListView());
-        TextView soundContent = (TextView) v.findViewById(R.id.sound_content);
-        CardView cardView = (CardView) v.findViewById(R.id.card_view);
-        RelativeLayout layout = (RelativeLayout) soundContent.getParent();
+        TextView text = (TextView) v.findViewById(R.id.text);
+        RelativeLayout layout = (RelativeLayout) text.getParent();
         if(selected){
-            cardView.setCardElevation(getResources().getDimension(R.dimen.card_elevation));
             ViewGroup.LayoutParams params = layout.getLayoutParams();
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            applySingleLine(soundContent, false);
+            applySingleLine(text, false);
         }else{
-            cardView.setCardElevation(0);
             ViewGroup.LayoutParams params = layout.getLayoutParams();
             params.height = (int) getResources().getDimension(R.dimen.list_with_avatar_height);
-            applySingleLine(soundContent, true);
+            applySingleLine(text, true);
         }
     }
 
