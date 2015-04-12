@@ -72,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
         PhraseHelper phraseHelper = new PhraseHelper(db);
         ReadingRuleHelper readingRuleHelper = new ReadingRuleHelper(db);
         GrammarHelper grammarHelper = new GrammarHelper(db);
+        ReadingExerciseHelper readingExerciseHelper = new ReadingExerciseHelper(db);
 
         application.registerHelper(lessonHelper);
         application.registerHelper(soundHelper);
@@ -82,6 +83,7 @@ public class MainActivity extends ActionBarActivity {
         application.registerHelper(phraseHelper);
         application.registerHelper(readingRuleHelper);
         application.registerHelper(grammarHelper);
+        application.registerHelper(readingExerciseHelper);
 
         SoundSection soundSection = new SoundSection(soundHelper);
         PhoneticExerciseSection phoneticExerciseSection = new PhoneticExerciseSection(phoneticExerciseHelper);
@@ -90,6 +92,7 @@ public class MainActivity extends ActionBarActivity {
         PhraseSection phraseSection = new PhraseSection(phraseHelper);
         ReadingRuleSection readingRuleSection = new ReadingRuleSection(readingRuleHelper);
         GrammarSection grammarSection = new GrammarSection(grammarHelper);
+        ReadingExerciseSection readingExerciseSection = new ReadingExerciseSection(readingExerciseHelper);
 
         SectionHelper sectionHelper = new SectionHelper();
         sectionHelper.registerSection(soundSection, SoundActivity.class);
@@ -99,6 +102,7 @@ public class MainActivity extends ActionBarActivity {
         sectionHelper.registerSection(phraseSection, PhraseActivity.class);
         sectionHelper.registerSection(readingRuleSection, ReadingRuleActivity.class);
         sectionHelper.registerSection(grammarSection, GrammarActivity.class);
+        sectionHelper.registerSection(readingExerciseSection, ReadingExerciseActivity.class);
 
         application.setSectionHelper(sectionHelper);
     }
