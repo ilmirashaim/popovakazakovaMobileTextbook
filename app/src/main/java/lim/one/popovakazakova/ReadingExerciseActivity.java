@@ -1,18 +1,24 @@
 package lim.one.popovakazakova;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import lim.one.popovakazakova.domain.Lesson;
 import lim.one.popovakazakova.domain.Phrase;
 import lim.one.popovakazakova.domain.ReadingExercise;
+import lim.one.popovakazakova.domain.ReadingRule;
 import lim.one.popovakazakova.domain.helper.LessonHelper;
 import lim.one.popovakazakova.domain.helper.PhraseHelper;
 import lim.one.popovakazakova.domain.helper.ReadingExerciseHelper;
 import lim.one.popovakazakova.util.PhraseListFragment;
 import lim.one.popovakazakova.util.ReadingExerciseListFragment;
+import lim.one.popovakazakova.util.ReadingRuleListFragment;
+import lim.one.popovakazakova.util.ReadingRuleTitlesListFragment;
 import lim.one.popovakazakova.util.common.MultiPlayer;
 import lim.one.popovakazakova.util.common.PlayButtonMultiPlayerConnector;
 import lim.one.popovakazakova.util.view.PlayButton;
@@ -36,14 +42,22 @@ public class ReadingExerciseActivity extends SecondaryActivity {
         ReadingExerciseHelper readingExerciseHelper = application.getHelper(ReadingExerciseHelper.class);
 
         Bundle b = getIntent().getExtras();
-        Long lessonId = b.getLong("lesson_id");
-        Lesson lesson = lessonHelper.getById(lessonId);
+        Boolean hasLesson = !b.getBoolean("has_no_lesson", false);
+        List<ReadingExercise> readingExercises;
+        Fragment fragment;
+        if (hasLesson) {
+            Long lessonId = b.getLong("lesson_id");
+            Lesson lesson = lessonHelper.getById(lessonId);
+            readingExercises = readingExerciseHelper.getExercises(lesson);
+            fragment = ReadingExerciseListFragment.newInstance(readingExercises);
 
-        List<ReadingExercise> readingExercises = readingExerciseHelper.getExercises(lesson);
+        } else {
+            readingExercises = readingExerciseHelper.getAllExercises();
+            fragment = ReadingExerciseListFragment.newInstance(readingExercises);
+        }
 
-        ReadingExerciseListFragment listFragment = ReadingExerciseListFragment.newInstance(readingExercises);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, listFragment).commit();
+                .add(R.id.fragment_container, fragment).commit();
     }
 
 }

@@ -21,15 +21,26 @@ public class ReadingExerciseHelper {
     }
 
     public List<ReadingExercise> getExercises(Lesson lesson) {
-        List<ReadingExercise> exercises = new ArrayList<>();
         Cursor cursor = db.query(tableName,
                 allColumns,
                 "lesson_id=?",
                 new String[]{lesson.getId().toString()},
                 null, null, null, null);
+        return cursorToReadingExerciseList(cursor);
+    }
+
+    public List<ReadingExercise> getAllExercises() {
+        Cursor cursor = db.query(tableName,
+                allColumns,
+                null, null, null, null, null, null);
+        return cursorToReadingExerciseList(cursor);
+    }
+
+    private List<ReadingExercise> cursorToReadingExerciseList(Cursor cursor) {
+        List<ReadingExercise> exercises = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            ReadingExercise readingExercise = cursorToPhrase(cursor);
+            ReadingExercise readingExercise = cursorToReadingExercise(cursor);
             cursor.moveToNext();
             exercises.add(readingExercise);
         }
@@ -37,7 +48,7 @@ public class ReadingExerciseHelper {
         return exercises;
     }
 
-    private ReadingExercise cursorToPhrase(Cursor cursor) {
+    private ReadingExercise cursorToReadingExercise(Cursor cursor) {
         ReadingExercise exercise = new ReadingExercise();
         exercise.setId(cursor.getLong(0));
         exercise.setLessonId(cursor.getLong(1));
